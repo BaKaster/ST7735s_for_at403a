@@ -76,27 +76,27 @@ int main(void)
   lcd_init();
 
 
-#if 1
-  /* for benchmark test */
-   lv_init();
-  lv_port_disp_init();
- // lv_demo_benchmark();
-#else  
-  /* for touch test */
-  touch_adjust();
-  lcd_display_initial_info();
-  lv_init();
-  lv_port_disp_init();
-  lv_port_indev_init();
-  lv_example_style_10(); 
-#endif  
-  lcd_clear(RED);
-  while(1)
-  {
-	  //lv_task_handler();
-	  lcd_display_initial_info();
-  }
-}
+//#if 1
+//  /* for benchmark test */
+//   lv_init();
+//  lv_port_disp_init();
+// // lv_demo_benchmark();
+//#else
+//  /* for touch test */
+//  touch_adjust();
+//  lcd_display_initial_info();
+//  lv_init();
+//  lv_port_disp_init();
+//  lv_port_indev_init();
+//  lv_example_style_10();
+//#endif
+//  lcd_clear(RED);
+//  while(1)
+//  {
+//	  //lv_task_handler();
+//	  lcd_display_initial_info();
+//  }
+//}
 
 
 /**
