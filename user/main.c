@@ -6,22 +6,20 @@
 #include <middlewares/3rd_party/lvgl/examples/porting/lv_port_disp_template.h>
 #include "middlewares/3rd_party/lvgl/examples/porting/lv_port_indev_template.h"
 #include "middlewares/3rd_party/lvgl/lvgl.h"
-#include "time.h"
-#include "stdlib.h"
-#include "string.h"
 
 
 #define    EXTEND_SRAM          0x00
 
+
 void crm_configuration(void);
 void nvic_configuration(void);
+
 
 /**
   * @brief  initializ lcd display information
   * @param  none
   * @retval none
   */
-
 void lcd_display_initial_info(void)
 {
     point_color = WHITE;
@@ -59,7 +57,6 @@ void extend_sram(void)
   * @param  none
   * @retval none
   */
-
 int main(void)
 {
   system_clock_config();
@@ -76,21 +73,25 @@ int main(void)
   lcd_init();
 
 
-#if 1
-  /* for benchmark test */
-   lv_init();
-  lv_port_disp_init();
+//#if 1
+//  /* for benchmark test */
+//   lv_init();
+//  lv_port_disp_init();
  // lv_demo_benchmark();
-#else  
-  /* for touch test */
-  touch_adjust();
-  lcd_display_initial_info();
-  lv_init();
-  lv_port_disp_init();
-  lv_port_indev_init();
-  lv_example_style_10(); 
-#endif  
+//#else
+//  /* for touch test */
+//  touch_adjust();
+//  lcd_display_initial_info();
+//  lv_init();
+//  lv_port_disp_init();
+//  lv_port_indev_init();
+//  lv_example_style_10();
+//#endif
+
+
   lcd_clear(RED);
+
+
   while(1)
   {
 	  //lv_task_handler();
