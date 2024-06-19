@@ -1,30 +1,7 @@
-/**
-  **************************************************************************
-  * @file     at32_video_ev_lcd.h
-  * @brief    at32_video_ev_lcd header file
-  **************************************************************************
-  *                       Copyright notice & Disclaimer
-  *
-  * The software Board Support Package (BSP) that is made available to
-  * download from Artery official website is the copyrighted work of Artery.
-  * Artery authorizes customers to use, copy, and distribute the BSP
-  * software and its related documentation for the purpose of design and
-  * development in conjunction with Artery microcontrollers. Use of the
-  * software is governed by this copyright notice and the following disclaimer.
-  *
-  * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
-  * GUARANTEES OR REPRESENTATIONS OF ANY KIND. ARTERY EXPRESSLY DISCLAIMS,
-  * TO THE FULLEST EXTENT PERMITTED BY LAW, ALL EXPRESS, IMPLIED OR
-  * STATUTORY OR OTHER WARRANTIES, GUARANTEES OR REPRESENTATIONS,
-  * INCLUDING BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
-  * FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
-  *
-  **************************************************************************
-  */
-
 #ifndef __AT32_VIDEO_EV_LCD_H
 #define __AT32_VIDEO_EV_LCD_H
 #include "at32f403a_407_board.h"
+#include <stdbool.h>
 
 #define LCD_WIDTH            	           128
 #define LCD_HEIGHT           	           160
@@ -42,9 +19,37 @@ typedef struct
   uint16_t setycmd;   //set y coordinate cmd
 } lcd_dev_struct;
 
-extern const unsigned char asc2_1206[][12];
-extern const unsigned char asc2_1608[][16];
-extern const unsigned char asc2_2412[][36];
+typedef struct {
+    wchar_t character;
+    int dataIndex;
+    int glyph_type;
+} CharIndex;
+
+typedef struct {
+    uint32_t bitmap_index;          /**< Start index of the bitmap. A font can be max 4 GB.*/
+    uint32_t adv_w;                 /**< Draw the next glyph after this width. 28.4 format (real_value * 16 is stored).*/
+    uint16_t box_w;                 /**< Width of the glyph's bounding box*/
+    uint16_t box_h;                 /**< Height of the glyph's bounding box*/
+    int16_t ofs_x;                  /**< x offset of the bounding box*/
+    int16_t ofs_y;                  /**< y offset of the bounding box. Measured from the top of the line*/
+} font_info;
+
+typedef struct {
+    const uint8_t *glyph_bitmap; // Указатель на растровые данные шрифта
+    const font_info *glyph_dsc;  // Указатель на массив описаний глифов
+} font_t;
+
+extern const uint8_t Montserrat_16_bitmap[];
+extern const uint8_t Montserrat_12_bitmap[];
+
+extern CharIndex charIndexArray[];
+
+extern const font_info Montserrat_16_glf[];
+extern const font_info Montserrat_12_glf[];
+
+extern const font_t Montserrat_16;
+extern const font_t Montserrat_12;
+
 extern lcd_dev_struct lcddev;
 /* point color and background color */
 extern uint16_t point_color;
@@ -66,19 +71,24 @@ extern uint16_t back_color;
 /* color value */
 #define WHITE         	                  0xFFFF
 #define BLACK         	                  0x0000
-#define BLUE         	                   0xF800
+#define BLUE         	                   0x001F
 #define BRED                             0xF81F
 #define GRED 			                         0xFFE0
 #define GBLUE			                         0x07FF
-#define RED           	                  0x001F
+#define RED           	                  0xF800
 #define TOUCH_RED      	                 0x00F8
 #define MAGENTA       	                  0xF81F
 #define GREEN         	                  0x07E0
 #define CYAN          	                  0x7FFF
 #define YELLOW        	                  0xFFE0
 #define BROWN 			                        0xBC40
-#define BRRED 			                        0xFC07
+#define BRRED 		\	                        0xFC07
 #define GRAY  			                        0x8430
+#define DARKGRAYISH 0x001F
+#define BUTTONS 	0x3186
+#define STATUS_BAR 	0x18E3
+#define GEOSCAN_COLOR 	0xC201
+#define BRIGHTED_SELECT 0X52AA
 
 #define DARKBLUE      	                  0x01CF
 #define LIGHTBLUE      	                 0x7D7C
@@ -91,16 +101,21 @@ extern uint16_t back_color;
 #define LGRAYBLUE                        0xA651
 #define LBBLUE                           0x2B12
 
+int16_t getFontDataIndex(wchar_t ch, const CharIndex* charIndexArray);
+uint16_t blend_colors(uint16_t fg, uint16_t bg, uint8_t alpha);
+void lcd_draw_round_rect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t r, uint16_t color);
 void lcd_wr_reg(uint8_t regval);
 void lcd_wr_data(uint8_t data);
+bool isPointInCircle(int x, int y, int cx, int cy, int r);
 void lcd_wr_data16(uint16_t data);
 void lcd_draw_point(uint16_t x, uint16_t y, uint16_t color);
 void lcd_draw_big_point(uint16_t x, uint16_t y, uint16_t color);
 void lcd_draw_line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
 void lcd_draw_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
 void lcd_draw_circle(uint16_t x0, uint16_t y0, uint8_t r, uint16_t color);
-void lcd_show_string(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t size, char *p);
-void lcd_show_char(uint16_t x, uint16_t y, uint8_t num, uint8_t size, uint8_t mode);
+void lcd_draw_circle_helper(uint16_t x0, uint16_t y0, uint16_t r, uint8_t cornername, uint16_t color);
+void lcd_show_string(uint16_t x, uint16_t y, uint16_t width, uint16_t height, const font_t *font, wchar_t *p, const uint16_t base_color);
+void lcd_show_char(uint16_t x, uint16_t y, uint8_t ch, const uint8_t glyph_bitmap[], const font_info glyph_dsc[], const uint16_t base_color, uint8_t gType);
 void lcd_set_window(unsigned int Xstart, unsigned int Ystart, unsigned int Xend, unsigned int Yend);
 void lcd_set_cursor(uint16_t Xpos, uint16_t Ypos);
 void lcd_scan_dir(uint8_t dir);

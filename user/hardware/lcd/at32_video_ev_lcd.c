@@ -23,7 +23,8 @@
   */
 
 #include "stdlib.h"
-#include "stdio.h"
+#include <stdio.h>
+#include <stdbool.h>
 #include "string.h"
 #include "math.h"
 #include "at32_video_ev_lcd.h"
@@ -36,6 +37,33 @@ uint16_t back_color = 0xFFFF;
 
 lcd_dev_struct lcddev;
 
+
+// Создаем буфер для хранения пикселей изображения
+uint16_t lcd_buffer[LCD_WIDTH * LCD_HEIGHT];
+
+// Функция для заполнения буфера цветом
+void lcd_fill_buffer(uint16_t color) {
+  for (int i = 0; i < LCD_WIDTH * LCD_HEIGHT; i++) {
+    lcd_buffer[i] = color;
+  }
+}
+
+// Функция для отрисовки точки в буфере
+
+// Функция для отправки буфера на LCD
+void lcd_display_buffer(void) {
+	//delay_ms(100);
+  lcd_set_window(0, 0, LCD_WIDTH - 1, LCD_HEIGHT - 1);
+  lcd_wr_reg(lcddev.wramcmd); // Команда записи в память LCD
+
+  // Здесь мы отправляем содержимое буфера на LCD
+  // Если вы используете DMA, настройте его на передачу данных из lcd_buffer
+  for (int i = 0; i < LCD_WIDTH * LCD_HEIGHT; i++) {
+    lcd_wr_data16(lcd_buffer[i]);
+  }
+}
+
+// Функция для инициализации LCD и буфера
 /**
   * @brief  lcd write register
   * @param  regval: register value
@@ -55,19 +83,45 @@ void lcd_wr_reg(uint8_t regval)
   */
 void lcd_wr_data(uint8_t data)
 {
-  lcd_spi1_write(data);
+  // Подготовка данных для передачи через DMA
+  uint8_t data_array[1] = {data};
+
+  // Настройка DMA для передачи данных
+  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.mincm = FALSE;
+  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.chen = FALSE;
+  LCD_SPI_MASTER_Tx_DMA_Channel->dtcnt_bit.cnt = 1; // Передача одного байта данных
+  LCD_SPI_MASTER_Tx_DMA_Channel->maddr  = (uint32_t)data_array;
+  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.chen = TRUE;
+
+  // Ожидание завершения передачи
+  dma_flag_clear(LCD_SPI_MASTER_Tx_DMA_FLAG);
+
+  // Восстановление настроек SPI
+  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.mincm = TRUE;
+  spi_frame_bit_num_set(LCD_SPI_SELECTED, SPI_FRAME_8BIT);
 }
 
-/**
-  * @brief  lcd write 16bit data
-  * @param  data: data value
-  * @retval none
-  */
+
 void lcd_wr_data16(uint16_t data)
 {
-  lcd_spi1_write(data >> 8);
-  lcd_spi1_write(data & 0xFF);
+  // Подготовка данных для передачи через DMA
+  uint16_t data_array[2] = {(data & 0xFF00) >> 8, data & 0x00FF};
+
+  // Настройка DMA для передачи данных
+  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.mincm = FALSE;
+  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.chen = FALSE;
+  LCD_SPI_MASTER_Tx_DMA_Channel->dtcnt_bit.cnt = 2; // Передача двух байт данных
+  LCD_SPI_MASTER_Tx_DMA_Channel->maddr  = (uint32_t)data_array;
+  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.chen = TRUE;
+
+  // Ожидание завершения передачи
+  dma_flag_clear(LCD_SPI_MASTER_Tx_DMA_FLAG);
+
+  // Восстановление настроек SPI
+  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.mincm = TRUE;
+  spi_frame_bit_num_set(LCD_SPI_SELECTED, SPI_FRAME_8BIT);
 }
+
 
 /**
   * @brief  lcd draw a point fast
@@ -76,11 +130,42 @@ void lcd_wr_data16(uint16_t data)
   * @param  color: draw color
   * @retval none
   */
-void lcd_draw_point(uint16_t x, uint16_t y, uint16_t color)
-{
-  lcd_set_cursor(x, y);
-  lcd_wr_data16(color);
+
+void lcd_draw_point(uint16_t x, uint16_t y, uint16_t color) {
+  if (x < LCD_WIDTH && y < LCD_HEIGHT) {
+    // Рассчитываем индекс в буфере на основе координат x и y
+    uint32_t index = y * LCD_WIDTH + x;
+    // Записываем цвет в буфер
+    lcd_buffer[index] = color;
+  }
 }
+
+//void lcd_draw_point(uint16_t x, uint16_t y, uint16_t color)
+//{
+//  // Установка курсора на нужную позицию
+//  lcd_set_cursor(x, y);
+//
+//  // Настройка окна LCD для одной точки
+//  lcd_set_window(x, y, x, y);
+//  LCD_DC_SET;
+//  spi_frame_bit_num_set(LCD_SPI_SELECTED, SPI_FRAME_16BIT);
+//
+//  // Настройка DMA для передачи данных
+//  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.mincm = FALSE;
+//  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.chen = FALSE;
+//  LCD_SPI_MASTER_Tx_DMA_Channel->dtcnt_bit.cnt = 1; // Только одна точка
+//  LCD_SPI_MASTER_Tx_DMA_Channel->maddr  = (uint32_t)&color;
+//  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.chen = TRUE;
+//
+//  // Ожидание завершения передачи
+//  //while(dma_flag_get(LCD_SPI_MASTER_Tx_DMA_FLAG) != SET);
+//  dma_flag_clear(LCD_SPI_MASTER_Tx_DMA_FLAG);
+//
+//  // Восстановление настроек SPI
+//  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.mincm = TRUE;
+//  spi_frame_bit_num_set(LCD_SPI_SELECTED, SPI_FRAME_8BIT);
+//}
+
 
 /**
   * @brief  lcd draw a big point
@@ -238,110 +323,382 @@ void lcd_draw_circle(uint16_t x0, uint16_t y0, uint8_t r, uint16_t color)
   }
 }
 
+
+void lcd_draw_round_rect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t r, uint16_t color)
+{
+  // smarter version
+  lcd_draw_line(x + r, y, x + w - r - 1, y, color); // Top
+  lcd_draw_line(x + r, y + h - 1, x + w - r - 1, y + h - 1, color); // Bottom
+  lcd_draw_line(x, y + r, x, y + h - r - 1, color); // Left
+  lcd_draw_line(x + w - 1, y + r, x + w - 1, y + h - r - 1, color); // Right
+  // draw four corners
+  lcd_draw_circle_helper(x + r, y + r, r, 1, color);
+  lcd_draw_circle_helper(x + r, y + h - r - 1, r, 8, color);
+  lcd_draw_circle_helper(x + w - r - 1, y + r, r, 2, color);
+  lcd_draw_circle_helper(x + w - r - 1, y + h - r - 1, r, 4, color);
+}
+
+void lcd_draw_circle_helper(uint16_t x0, uint16_t y0, uint16_t r, uint8_t cornername, uint16_t color)
+{
+  int16_t f = 1 - r;
+  int16_t ddF_x = 1;
+  int16_t ddF_y = -2 * r;
+  int16_t x = 0;
+
+  while (x < r)
+  {
+    if (f >= 0)
+    {
+      r--;
+      ddF_y += 2;
+      f += ddF_y;
+    }
+    x++;
+    ddF_x += 2;
+    f += ddF_x;
+    if (cornername & 0x8)
+    {
+      lcd_draw_point(x0 - r, y0 + x, color);
+      lcd_draw_point(x0 - x, y0 + r, color);
+    }
+    if (cornername & 0x4)
+    {
+      lcd_draw_point(x0 + x, y0 + r, color);
+      lcd_draw_point(x0 + r, y0 + x, color);
+    }
+    if (cornername & 0x2)
+    {
+      lcd_draw_point(x0 + r, y0 - x, color);
+      lcd_draw_point(x0 + x, y0 - r, color);
+    }
+    if (cornername & 0x1)
+    {
+      lcd_draw_point(x0 - x, y0 - r, color);
+      lcd_draw_point(x0 - r, y0 - x, color);
+    }
+  }
+}
+
+void lcd_draw_filled_round_rect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t r, uint16_t color)
+{
+  // Заполняем прямоугольник без закругленных углов
+  lcd_draw_filled_rectangle(x + r, y, w - r - r, h, color);
+
+  // Рисуем четыре закругленных угла
+  lcd_draw_filled_circle_helper(x + r, y + r, r, 2, color); // Нижний левый угол
+  lcd_draw_filled_circle_helper(x + w - r - 1, y + r, r, 1, color); // Нижний правый угол
+  lcd_draw_filled_circle_helper(x + r, y + h - r - 1, r, 8, color); // Верхний левый угол
+  lcd_draw_filled_circle_helper(x + w - r - 1, y + h - r - 1, r, 4, color); // Верхний правый угол
+}
+
+void lcd_draw_filled_circle_helper(uint16_t x0, uint16_t y0, uint16_t r, uint8_t cornername, uint16_t color)
+{
+  int16_t f = 1 - r;
+  int16_t ddF_x = 1;
+  int16_t ddF_y = -2 * r;
+  int16_t x = 0;
+
+  while (x < r)
+  {
+    if (f >= 0)
+    {
+      r--;
+      ddF_y += 2;
+      f += ddF_y;
+    }
+    x++;
+    ddF_x += 2;
+    f += ddF_x;
+
+    // Заливка по углам
+    if (cornername & 0x8)
+    {
+      // Заливка вертикальной линии слева
+      for (int16_t y = y0 + x; y <= y0 + r; y++)
+      {
+        lcd_draw_point(x0 - r, y, color);
+      }
+      // Заливка горизонтальной линии снизу
+      for (int16_t x1 = x0 - x; x1 <= x0 - r; x1++)
+      {
+        lcd_draw_point(x1, y0 + r, color);
+      }
+    }
+    if (cornername & 0x4)
+    {
+      // Заливка вертикальной линии справа
+      for (int16_t y = y0 + x; y <= y0 + r; y++)
+      {
+        lcd_draw_point(x0 + r, y, color);
+      }
+      // Заливка горизонтальной линии снизу
+      for (int16_t x1 = x0 + x; x1 <= x0 + r; x1++)
+      {
+        lcd_draw_point(x1, y0 + r, color);
+      }
+    }
+    if (cornername & 0x2)
+    {
+      // Заливка вертикальной линии справа
+      for (int16_t y = y0 - x; y <= y0 - r; y++)
+      {
+        lcd_draw_point(x0 + r, y, color);
+      }
+      // Заливка горизонтальной линии сверху
+      for (int16_t x1 = x0 + x; x1 <= x0 + r; x1++)
+      {
+        lcd_draw_point(x1, y0 - r, color);
+      }
+    }
+    if (cornername & 0x1)
+    {
+      // Заливка вертикальной линии слева
+      for (int16_t y = y0 - x; y <= y0 - r; y++)
+      {
+        lcd_draw_point(x0 - r, y, color);
+      }
+      // Заливка горизонтальной линии сверху
+      for (int16_t x1 = x0 - x; x1 <= x0 - r; x1++)
+      {
+        lcd_draw_point(x1, y0 - r, color);
+      }
+    }
+  }
+}
+/**
+  * @brief  lcd draw filled rounded rectangle with inner border
+  * @param  x: x coordinate of the top left corner
+  * @param  y: y coordinate of the top left corner
+  * @param  width: width of the rectangle
+  * @param  height: height of the rectangle
+  * @param  radius: radius of the rounded corners
+  * @param  fillColor: color to fill the rectangle
+  * @param  borderColor: color of the border
+  * @param  borderWidth: width of the border
+  * @retval none
+  */
+void lcd_draw_filled_rounded_rectangle_with_inner_border(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t radius, uint16_t fillColor, uint16_t borderColor, uint16_t borderWidth)
+{
+// Draw the filled rounded rectangle with the border color
+lcd_draw_filled_rounded_rectangle(x, y, width, height, radius, borderColor);
+// Draw the inner filled rounded rectangle with the fill color
+// The inner rectangle is smaller to create the border effect
+lcd_draw_filled_rounded_rectangle(x + borderWidth, y + borderWidth, width - 2 * borderWidth, height - 2 * borderWidth, radius > borderWidth ? radius - borderWidth : 0, fillColor);
+}
+
+
+/**
+  * @brief  lcd draw a rounded rectangle
+  * @param  x: x coordinate of the top left corner
+  * @param  y: y coordinate of the top left corner
+  * @param  width: width of the rectangle
+  * @param  height: height of the rectangle
+  * @param  radius: radius of the rounded corners
+  * @param  color: color of the rectangle
+  * @retval none
+  */
+/**
+  * @brief  lcd draw filled rounded rectangle
+  * @param  x: x coordinate of the top left corner
+  * @param  y: y coordinate of the top left corner
+  * @param  width: width of the rectangle
+  * @param  height: height of the rectangle
+  * @param  radius: radius of the rounded corners
+  * @param  color: color to fill the rectangle
+  * @retval none
+  */
+void lcd_draw_filled_rounded_rectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t radius, uint16_t color)
+{
+  // Draw the inner rectangle
+  lcd_draw_filled_rectangle(x + radius, y, width - 2 * radius, height, color);
+
+  // Fill the corners
+  lcd_fill_circle(x + radius, y + radius, radius, color); // Top left corner
+  lcd_fill_circle(x + width - radius - 1, y + radius, radius, color); // Top right corner
+  lcd_fill_circle(x + radius, y + height - radius - 1, radius, color); // Bottom left corner
+  lcd_fill_circle(x + width - radius - 1, y + height - radius - 1, radius, color); // Bottom right corner
+
+  // Fill the edges
+  lcd_draw_filled_rectangle(x, y + radius, radius, height - 2 * radius, color); // Left edge
+  lcd_draw_filled_rectangle(x + width - radius, y + radius, radius, height - 2 * radius, color); // Right edge
+  lcd_draw_filled_rectangle(x + radius, y, width - 2 * radius, radius, color); // Top edge
+  lcd_draw_filled_rectangle(x + radius, y + height - radius, width - 2 * radius, radius, color); // Bottom edge
+}
+
+/**
+  * @brief  lcd fill circle
+  * @param  x0: x coordinate of the center
+  * @param  y0: y coordinate of the center
+  * @param  r: radius of the circle
+  * @param  color: color to fill the circle
+  * @retval none
+  */
+void lcd_fill_circle(uint16_t x0, uint16_t y0, uint16_t r, uint16_t color)
+{
+  int16_t f = 1 - r;
+  int16_t ddF_x = 1;
+  int16_t ddF_y = -2 * r;
+  int16_t x = 0;
+  int16_t y = r;
+
+  lcd_draw_point(x0, y0 + r, color);
+  lcd_draw_point(x0, y0 - r, color);
+  lcd_draw_point(x0 + r, y0, color);
+  lcd_draw_point(x0 - r, y0, color);
+  lcd_draw_filled_rectangle(x0 - r, y0, 2 * r + 1, 1, color);
+
+  while(x < y)
+  {
+    if(f >= 0)
+    {
+      y--;
+      ddF_y += 2;
+      f += ddF_y;
+    }
+    x++;
+    ddF_x += 2;
+    f += ddF_x;
+    lcd_draw_filled_rectangle(x0 - x, y0 + y, 2 * x + 1, 1, color);
+    lcd_draw_filled_rectangle(x0 - x, y0 - y, 2 * x + 1, 1, color);
+    lcd_draw_filled_rectangle(x0 - y, y0 + x, 2 * y + 1, 1, color);
+    lcd_draw_filled_rectangle(x0 - y, y0 - x, 2 * y + 1, 1, color);
+  }
+}
+
+
+/**
+  * @brief  lcd draw filled rectangle
+  * @param  x: x coordinate of the top left corner
+  * @param  y: y coordinate of the top left corner
+  * @param  width: width of the rectangle
+  * @param  height: height of the rectangle
+  * @param  color: color to fill the rectangle
+  * @retval none
+  */
+/**
+  * @brief  lcd draw filled rectangle
+  * @param  x: x coordinate of the top left corner
+  * @param  y: y coordinate of the top left corner
+  * @param  width: width of the rectangle
+  * @param  height: height of the rectangle
+  * @param  color: color to fill the rectangle
+  * @retval none
+  */
+void lcd_draw_filled_rectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color)
+{
+  uint16_t i, j;
+
+  // Set the area where the rectangle will be drawn
+ // lcd_set_window(x, y, x + width - 1, y + height - 1);
+
+  // Fill the rectangle with the specified color
+  for(i = y; i < y + height; i++)
+  {
+    for(j = x; j < x + width; j++)
+    {
+      lcd_draw_point(j, i, color);
+    }
+  }
+}
+
+
+
+
+
+
+
 /**
   * @brief  lcd show string
   * @param  x: start x coordinate value
   * @param  y: start y coordinate value
   * @param  width: string width
   * @param  height: string height
-  * @param  size: string size
+  * @param  font_t: font
   * @param  p: string point
-  * @retval none
+  * @param  base_color: text color
   */
-void lcd_show_string(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t size, char *p)
+
+void lcd_show_string(uint16_t x, uint16_t y, uint16_t width, uint16_t height, const font_t *font, wchar_t *p, const uint16_t base_color)
 {
-  uint8_t x0 = x;
-  width += x;
-  height += y;
+    uint16_t x0 = x;
+    uint16_t y0 = y;
+    width += x;
+    height += y;
 
-  while((*p <= '~') && (*p >= ' '))
-  {
-    if(x >= width)
-    {
-      x = x0;
-      y += size;
-    }
+    while((*p <= L'ё') && (*p >= L' ')) {
 
-    if(y >= height)
-    {
-      break;
-    }
+        uint8_t ch = getFontDataIndex(*p, charIndexArray);
+    	uint8_t gType = charIndexArray[ch].glyph_type;
 
-    lcd_show_char(x, y, *p, size, 0);
-    x += size / 2;
-    p++;
-  }
-}
-
-/**
-  * @brief  lcd show a character
-  * @param  x: start x coordinate value
-  * @param  y: start y coordinate value
-  * @param  num: character number
-  * @param  size: character size
-  * @param  mode: superposition mode
-  * @retval none
-  */
-void lcd_show_char(uint16_t x, uint16_t y, uint8_t num, uint8_t size, uint8_t mode)
-{
-  uint8_t temp, t1, t;
-  uint16_t y0 = y;
-  uint8_t csize = (size / 8 + ((size % 8) ? 1 : 0)) * (size / 2);
-  num = num - ' ';
-
-  for(t = 0; t < csize; t++)
-  {
-    if(size == 12)
-    {
-      temp = asc2_1206[num][t];  //1206 typeface
-    }
-    else if(size == 16)
-    {
-      temp = asc2_1608[num][t];  //1608 typeface
-    }
-    else if(size == 24)
-    {
-      temp = asc2_2412[num][t];  //2412 typeface
-    }
-    else
-    {
-      return;
-    }
-
-    for(t1 = 0; t1 < 8; t1++)
-    {
-      if(temp & 0x80)
-      {
-        lcd_draw_point(x, y, point_color);
-      }
-      else if(mode == 0)
-      {
-        lcd_draw_point(x, y, back_color);
-      }
-
-      temp <<= 1;
-      y++;
-
-      if(y >= lcddev.height)
-      {
-        return;
-      }
-
-      if((y - y0) == size)
-      {
-        y = y0;
-        x++;
-
-        if(x >= lcddev.width)
-        {
-          return;
+    	const font_info *gd = &font->glyph_dsc[ch];
+        // Проверяем, не выходим ли за пределы заданной ширины
+        if(x + gd->box_w > width) {
+            x = x0; // Возврат к началу строки
+            y += gd->box_h;  // Переход на следующую строку
         }
 
-        break;
-      }
+        // Проверяем, не выходим ли за пределы заданной высоты
+        if(y + gd->box_h > height) {
+            break;
+        }
+
+        lcd_show_char(x, y, ch, font->glyph_bitmap, font->glyph_dsc, base_color, gType);
+
+        // Сдвигаемся вправо на ширину символа
+        x += (gd->adv_w / 16);
+        p++;
     }
-  }
 }
+
+
+void lcd_show_char(uint16_t x, uint16_t y, uint8_t ch, const uint8_t glyph_bitmap[], const font_info glyph_dsc[], const uint16_t base_color, uint8_t gType) {
+
+    const font_info *gd = &glyph_dsc[ch];
+
+    uint8_t fWidth = gd->box_w;
+    uint8_t fHeight = gd->box_h;
+    uint32_t bitmap_index = gd->bitmap_index;
+    int16_t ofs_x = gd->ofs_x;
+    int16_t ofs_y = gd->ofs_y;
+
+    int16_t adjusted_y_offset = 0;
+
+    switch (gType) {
+        case 0:
+            adjusted_y_offset = -(fHeight - 4);
+            break;
+        case 1:
+            adjusted_y_offset = -fHeight;
+            break;
+    }
+
+    for (uint8_t j = 0; j < fHeight; j++) {
+        int16_t adjusted_y = y + j + adjusted_y_offset - ofs_y;
+
+        for (uint8_t i = 0; i < fWidth; i++) {
+            uint32_t glyph_bit_index = j * fWidth + i;
+            uint32_t byte_index = glyph_bit_index >> 1;
+            uint8_t pixel_value = (glyph_bitmap[bitmap_index + byte_index] >> ((1 - (glyph_bit_index % 2)) * 4)) & 0x0F;
+
+            if (pixel_value != 0) {
+                uint16_t bg_color = lcd_buffer[adjusted_y * LCD_WIDTH + (x + i + ofs_x)];
+                uint8_t alpha = (pixel_value * 255) / 16; // Быстрое преобразование прозрачности
+                uint16_t blended_color = blend_colors(base_color, bg_color, alpha);
+                lcd_draw_point(x + i + ofs_x, adjusted_y, blended_color);
+            }
+        }
+    }
+}
+
+// Функция для блендинга двух цветов с заданной прозрачностью (alpha)
+inline uint16_t blend_colors(uint16_t fg, uint16_t bg, uint8_t alpha) {
+    // Улучшенное извлечение и комбинирование цветовых компонент
+    uint8_t r = (((fg >> 11) * alpha) + ((bg >> 11) * (255 - alpha))) >> 8;
+    uint8_t g = ((((fg >> 5) & 0x3F) * alpha) + (((bg >> 5) & 0x3F) * (255 - alpha))) >> 8;
+    uint8_t b = (((fg & 0x1F) * alpha) + ((bg & 0x1F) * (255 - alpha))) >> 8;
+    return (r << 11) | (g << 5) | b;
+}
+
 
 /**
   * @brief  write lcd block
@@ -404,7 +761,7 @@ void lcd_scan_dir(uint8_t dir)
       lcddev.setycmd = 0x2B;
       lcddev.wramcmd = 0x2C;
       lcd_wr_reg(0x36);
-      lcd_wr_data(0x08);
+      lcd_wr_data(0x00);
       break;
     case 1:
       lcddev.width = 160;
@@ -413,7 +770,7 @@ void lcd_scan_dir(uint8_t dir)
       lcddev.setycmd = 0x2B;
       lcddev.wramcmd = 0x2C;
       lcd_wr_reg(0x36);
-      lcd_wr_data(0xA8);
+      lcd_wr_data(0xA0);
       break;
     case 2:
       lcddev.width = 128;
@@ -422,7 +779,7 @@ void lcd_scan_dir(uint8_t dir)
       lcddev.setycmd = 0x2B;
       lcddev.wramcmd = 0x2C;
       lcd_wr_reg(0x36);
-      lcd_wr_data(0xC8);
+      lcd_wr_data(0xC0);
       break;
     case 3:
       lcddev.width = 160;
@@ -431,7 +788,7 @@ void lcd_scan_dir(uint8_t dir)
       lcddev.setycmd = 0x2B;
       lcddev.wramcmd = 0x2C;
       lcd_wr_reg(0x36);
-      lcd_wr_data(0x68);
+      lcd_wr_data(0x60);
       break;
     default:
       break;
@@ -476,12 +833,12 @@ void st7735s_initial(void)
   lcd_wr_reg(0xC1);  //power control
   lcd_wr_data(0x12); //sap[2:0];bt[3:0]
   lcd_wr_reg(0xC5);  //vcm control
-  lcd_wr_data(0x33);
-  lcd_wr_data(0x3F);
+  lcd_wr_data(0x0E);
+  lcd_wr_data(0x11);
   lcd_wr_reg(0xC7);  //vcm control
-  lcd_wr_data(0x92);
+  lcd_wr_data(0x10);
   lcd_wr_reg(0x3A);  //memory access control
-  lcd_wr_data(0x55);
+  lcd_wr_data(0x05);
   lcd_wr_reg(0xB1);
   lcd_wr_data(0x00);
   lcd_wr_data(0x12);
@@ -492,42 +849,48 @@ void st7735s_initial(void)
   lcd_wr_reg(0x44);
   lcd_wr_data(0x02);
 
-  lcd_wr_reg(0xF2);  //3gamma function disable
-  lcd_wr_data(0x00);
-  lcd_wr_reg(0x26);  //gamma curve selected
-  lcd_wr_data(0x01);
+//  lcd_wr_reg(0xF2);  //3gamma function disable
+//  lcd_wr_data(0x01);
+//  lcd_wr_reg(0x26);  //gamma curve selected
+//  lcd_wr_data(0x01);
   lcd_wr_reg(0xE0);  //set gamma
-  lcd_wr_data(0x0F);
-  lcd_wr_data(0x22);
-  lcd_wr_data(0x1C);
-  lcd_wr_data(0x1B);
-  lcd_wr_data(0x08);
-  lcd_wr_data(0x0F);
-  lcd_wr_data(0x48);
-  lcd_wr_data(0xB8);
-  lcd_wr_data(0x34);
-  lcd_wr_data(0x05);
-  lcd_wr_data(0x0C);
-  lcd_wr_data(0x09);
-  lcd_wr_data(0x0F);
-  lcd_wr_data(0x07);
+  lcd_wr_data(0x00); // -2
+  lcd_wr_data(0x00); // -2
+  lcd_wr_data(0x00); // -2
+  lcd_wr_data(0x00); // -2
+
+  lcd_wr_data(0x00);  // -4
+  lcd_wr_data(0x00);  // -4
+  lcd_wr_data(0x00);  // -4
+  lcd_wr_data(0x00);  // -4
+  lcd_wr_data(0x00);  // -4
+  lcd_wr_data(0x00);  // -4
+  lcd_wr_data(0x00);  // -4
+
+  lcd_wr_data(0x00);
+  lcd_wr_data(0x00);
+  lcd_wr_data(0x00);
+  lcd_wr_data(0x00);
   lcd_wr_data(0x00);
   lcd_wr_reg(0xE1);  //set gamma
+  lcd_wr_data(0x00); // -2
+  lcd_wr_data(0x00); // -2
+  lcd_wr_data(0x00); // -2
+  lcd_wr_data(0x00); // -2
+
+  lcd_wr_data(0x00);  // +4
+  lcd_wr_data(0x00);  // +4
+  lcd_wr_data(0x00);  // +4
+  lcd_wr_data(0x00);  // +4
+  lcd_wr_data(0x00);  // +4
   lcd_wr_data(0x00);
-  lcd_wr_data(0x23);
-  lcd_wr_data(0x24);
-  lcd_wr_data(0x07);
-  lcd_wr_data(0x10);
-  lcd_wr_data(0x07);
-  lcd_wr_data(0x38);
-  lcd_wr_data(0x47);
-  lcd_wr_data(0x4B);
-  lcd_wr_data(0x0A);
-  lcd_wr_data(0x13);
-  lcd_wr_data(0x06);
-  lcd_wr_data(0x30);
-  lcd_wr_data(0x38);
-  lcd_wr_data(0x0F);
+  lcd_wr_data(0x00);
+
+  lcd_wr_data(0x00);
+  lcd_wr_data(0x00);
+  lcd_wr_data(0x00);
+  lcd_wr_data(0x00);
+  lcd_wr_data(0x00);
   lcd_wr_reg(0x29);  //display on
 }
 
@@ -563,18 +926,16 @@ void lcd_init(void)
   */
 void lcd_clear(uint16_t color)
 {
-   /* not use dma */
-  uint16_t i, j;
-  for(i = 0; i < LCD_HEIGHT; i++)
-  {
-    lcd_set_cursor(0, i);
+  // Заполнение буфера заданным цветом
+	 uint16_t i, j;
+	  for(i = 0; i < LCD_HEIGHT*LCD_WIDTH; i++)
+	  {
 
-    for(j = 0; j < LCD_WIDTH; j++)
-    {
-      lcd_wr_data16(color);
-    }
-  }
-//#else   /* use dma */
+	       lcd_buffer[i] = color;
+
+	  }
+
+////#else   /* use dma */
 // 	uint32_t num,num1;
 //  lcd_set_window(0, 0, LCD_WIDTH - 1, LCD_HEIGHT - 1);
 //  LCD_DC_SET;
@@ -597,12 +958,12 @@ void lcd_clear(uint16_t color)
 //    LCD_SPI_MASTER_Tx_DMA_Channel->dtcnt_bit.cnt = num1;
 //    LCD_SPI_MASTER_Tx_DMA_Channel->maddr  = (uint32_t)&color;
 //    LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.chen = TRUE;
-//    while(dma_flag_get(LCD_SPI_MASTER_Tx_DMA_FLAG) != SET);
 //    dma_flag_clear(LCD_SPI_MASTER_Tx_DMA_FLAG);
 //  }
 //  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.mincm = TRUE;
 //  spi_frame_bit_num_set(LCD_SPI_SELECTED, SPI_FRAME_8BIT);
 //#endif
+
 }
 
 /**
@@ -697,7 +1058,7 @@ void lcd_show_num(uint16_t x, uint16_t y, uint32_t num, uint8_t len, uint8_t siz
     {
       if(temp == 0)
       {
-        lcd_show_char(x + (size / 2)*t, y, ' ', size, 0);
+     //   lcd_show_char(x + (size / 2)*t, y, ' ', size, 0);
         continue;
       }
       else
@@ -707,7 +1068,7 @@ void lcd_show_num(uint16_t x, uint16_t y, uint32_t num, uint8_t len, uint8_t siz
 
     }
 
-    lcd_show_char(x + (size / 2)*t, y, temp + '0', size, 0);
+  //  lcd_show_char(x + (size / 2)*t, y, temp + '0', size, 0);
   }
 }
 
@@ -736,11 +1097,11 @@ void lcd_show_xnum(uint16_t x, uint16_t y, uint32_t num, uint8_t len, uint8_t si
       {
         if(mode & 0x80)
         {
-          lcd_show_char(x + (size / 2)*t, y, '0', size, mode & 0x01);
+        //  lcd_show_char(x + (size / 2)*t, y, '0', size, mode & 0x01);
         }
         else
         {
-          lcd_show_char(x + (size / 2)*t, y, ' ', size, mode & 0x01);
+         // lcd_show_char(x + (size / 2)*t, y, ' ', size, mode & 0x01);
         }
 
         continue;
@@ -752,7 +1113,7 @@ void lcd_show_xnum(uint16_t x, uint16_t y, uint32_t num, uint8_t len, uint8_t si
 
     }
 
-    lcd_show_char(x + (size / 2)*t, y, temp + '0', size, mode & 0x01);
+    //lcd_show_char(x + (size / 2)*t, y, temp + '0', size, mode & 0x01);
   }
 }
 

@@ -653,7 +653,7 @@ void spi_i2s_flag_clear(spi_type* spi_x, uint32_t spi_i2s_flag)
   else if(spi_i2s_flag == SPI_MMERR_FLAG)
   {
     UNUSED(spi_x->sts);
-    spi_x->ctrl1 = spi_x->ctrl1;
+   // spi_x->ctrl1 = spi_x->ctrl1;
   }
   else if(spi_i2s_flag == SPI_I2S_ROERR_FLAG)
   {
