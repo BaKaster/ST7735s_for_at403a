@@ -25,6 +25,7 @@ void lcd_display_initial_info(void)
 //    back_color = RED;
 //    lcd_draw_rectangle(20,20, 64,64, WHITE);
     //lcd_draw_filled_rectangle(40, 40, 20, 30, WHITE);
+	lcd_clear(BACKGROUND);
 	lcd_draw_filled_round_rect(0, 0, 128, 21, 5, STATUS_BAR);
 	lcd_draw_filled_round_rect(3, 25, 121, 23, 7, BRIGHTED_SELECT);
 	lcd_draw_filled_round_rect(3, 52, 121, 23, 7, BUTTONS);
@@ -42,7 +43,7 @@ void lcd_display_initial_info(void)
     lcd_show_string(28,92,120,100,&Montserrat_16,L"Настройки", WHITE);
     lcd_show_string(28,119,120,100,&Montserrat_16, L"Геоскан", WHITE);
     lcd_show_string(28,146,120,100,&Montserrat_16, L"Функция", WHITE);
-    st7735s_DrawBitmap(city, 0, 0, 128, 160);
+   // st7735s_DrawBitmap(city, 0, 0, 128, 160);
 	lcd_display_buffer();
 }
 
@@ -85,24 +86,9 @@ int main(void)
   lcd_init();
 
 
-//#if 1
-//  /* for benchmark test */
- // lv_init();
- //lv_port_disp_init();
-// // lv_demo_benchmark();
-//#else
-//  /* for touch test */
-//  touch_adjust();
-//  lcd_display_initial_info();
-//  lv_init();
-//  lv_port_disp_init();
-//  lv_port_indev_init();
-//  lv_example_style_10();
-//#endif
   //lcd_clear(0x0841);
   while(1)
   {
-	  //lv_task_handler();
 	  lcd_display_initial_info();
   }
 }

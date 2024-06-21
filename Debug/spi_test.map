@@ -101,6 +101,8 @@ Discarded input sections
  .data          0x0000000000000000        0x2 ./user/hardware/lcd/at32_video_ev_lcd.o
  .text.lcd_fill_buffer
                 0x0000000000000000       0x3c ./user/hardware/lcd/at32_video_ev_lcd.o
+ .text.st7735s_DrawBitmap
+                0x0000000000000000       0xf2 ./user/hardware/lcd/at32_video_ev_lcd.o
  .text.lcd_draw_rectangle
                 0x0000000000000000       0x6e ./user/hardware/lcd/at32_video_ev_lcd.o
  .text.lcd_draw_circle
@@ -109,8 +111,6 @@ Discarded input sections
                 0x0000000000000000      0x194 ./user/hardware/lcd/at32_video_ev_lcd.o
  .text.lcd_set_cursor
                 0x0000000000000000       0x70 ./user/hardware/lcd/at32_video_ev_lcd.o
- .text.lcd_clear
-                0x0000000000000000       0x3c ./user/hardware/lcd/at32_video_ev_lcd.o
  .text.lcd_fill
                 0x0000000000000000       0x90 ./user/hardware/lcd/at32_video_ev_lcd.o
  .text.lcd_pow  0x0000000000000000       0x38 ./user/hardware/lcd/at32_video_ev_lcd.o
@@ -125,6 +125,16 @@ Discarded input sections
  .text          0x0000000000000000        0x0 ./user/images.o
  .data          0x0000000000000000        0x0 ./user/images.o
  .bss           0x0000000000000000        0x0 ./user/images.o
+ .rodata        0x0000000000000000     0xa000 ./user/images.o
+ .debug_info    0x0000000000000000      0x14d ./user/images.o
+ .debug_abbrev  0x0000000000000000       0x8a ./user/images.o
+ .debug_aranges
+                0x0000000000000000       0x18 ./user/images.o
+ .debug_line    0x0000000000000000      0x165 ./user/images.o
+ .debug_str     0x0000000000000000      0x30c ./user/images.o
+ .comment       0x0000000000000000       0x4a ./user/images.o
+ .ARM.attributes
+                0x0000000000000000       0x34 ./user/images.o
  .text          0x0000000000000000        0x0 ./user/main.o
  .data          0x0000000000000000        0x0 ./user/main.o
  .bss           0x0000000000000000        0x0 ./user/main.o
@@ -1589,7 +1599,7 @@ LOAD /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/.
                 0x0000000008000000                g_pfnVectors
                 0x0000000008000184                . = ALIGN (0x4)
 
-.text           0x0000000008000184     0x3800
+.text           0x0000000008000184     0x3730
                 0x0000000008000184                . = ALIGN (0x4)
  *(.text)
  .text          0x0000000008000184       0x40 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
@@ -1619,525 +1629,522 @@ LOAD /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/.
  .text.lcd_draw_point
                 0x00000000080005fc       0x44 ./user/hardware/lcd/at32_video_ev_lcd.o
                 0x00000000080005fc                lcd_draw_point
- .text.st7735s_DrawBitmap
-                0x0000000008000640       0xf2 ./user/hardware/lcd/at32_video_ev_lcd.o
-                0x0000000008000640                st7735s_DrawBitmap
  .text.lcd_draw_line
-                0x0000000008000732      0x10a ./user/hardware/lcd/at32_video_ev_lcd.o
-                0x0000000008000732                lcd_draw_line
+                0x0000000008000640      0x10a ./user/hardware/lcd/at32_video_ev_lcd.o
+                0x0000000008000640                lcd_draw_line
  .text.lcd_draw_filled_rectangle
-                0x000000000800083c       0x64 ./user/hardware/lcd/at32_video_ev_lcd.o
-                0x000000000800083c                lcd_draw_filled_rectangle
+                0x000000000800074a       0x64 ./user/hardware/lcd/at32_video_ev_lcd.o
+                0x000000000800074a                lcd_draw_filled_rectangle
  .text.lcd_draw_circle_helper
-                0x00000000080008a0      0x17c ./user/hardware/lcd/at32_video_ev_lcd.o
-                0x00000000080008a0                lcd_draw_circle_helper
+                0x00000000080007ae      0x17c ./user/hardware/lcd/at32_video_ev_lcd.o
+                0x00000000080007ae                lcd_draw_circle_helper
  .text.lcd_draw_filled_circle_helper
-                0x0000000008000a1c      0x1a0 ./user/hardware/lcd/at32_video_ev_lcd.o
-                0x0000000008000a1c                lcd_draw_filled_circle_helper
+                0x000000000800092a      0x1a0 ./user/hardware/lcd/at32_video_ev_lcd.o
+                0x000000000800092a                lcd_draw_filled_circle_helper
  .text.lcd_draw_round_rect
-                0x0000000008000bbc      0x18a ./user/hardware/lcd/at32_video_ev_lcd.o
-                0x0000000008000bbc                lcd_draw_round_rect
+                0x0000000008000aca      0x18a ./user/hardware/lcd/at32_video_ev_lcd.o
+                0x0000000008000aca                lcd_draw_round_rect
  .text.lcd_draw_filled_round_rect
-                0x0000000008000d46      0x198 ./user/hardware/lcd/at32_video_ev_lcd.o
-                0x0000000008000d46                lcd_draw_filled_round_rect
- *fill*         0x0000000008000ede        0x2 
+                0x0000000008000c54      0x198 ./user/hardware/lcd/at32_video_ev_lcd.o
+                0x0000000008000c54                lcd_draw_filled_round_rect
  .text.lcd_show_string
-                0x0000000008000ee0       0xec ./user/hardware/lcd/at32_video_ev_lcd.o
-                0x0000000008000ee0                lcd_show_string
+                0x0000000008000dec       0xec ./user/hardware/lcd/at32_video_ev_lcd.o
+                0x0000000008000dec                lcd_show_string
  .text.lcd_show_char
-                0x0000000008000fcc      0x17c ./user/hardware/lcd/at32_video_ev_lcd.o
-                0x0000000008000fcc                lcd_show_char
+                0x0000000008000ed8      0x17c ./user/hardware/lcd/at32_video_ev_lcd.o
+                0x0000000008000ed8                lcd_show_char
  .text.blend_colors
-                0x0000000008001148       0xaa ./user/hardware/lcd/at32_video_ev_lcd.o
-                0x0000000008001148                blend_colors
- *fill*         0x00000000080011f2        0x2 
+                0x0000000008001054       0xaa ./user/hardware/lcd/at32_video_ev_lcd.o
+                0x0000000008001054                blend_colors
+ *fill*         0x00000000080010fe        0x2 
  .text.lcd_set_window
-                0x00000000080011f4       0x98 ./user/hardware/lcd/at32_video_ev_lcd.o
-                0x00000000080011f4                lcd_set_window
+                0x0000000008001100       0x98 ./user/hardware/lcd/at32_video_ev_lcd.o
+                0x0000000008001100                lcd_set_window
  .text.lcd_scan_dir
-                0x000000000800128c       0xe8 ./user/hardware/lcd/at32_video_ev_lcd.o
-                0x000000000800128c                lcd_scan_dir
+                0x0000000008001198       0xe8 ./user/hardware/lcd/at32_video_ev_lcd.o
+                0x0000000008001198                lcd_scan_dir
  .text.st7735s_initial
-                0x0000000008001374      0x1e8 ./user/hardware/lcd/at32_video_ev_lcd.o
-                0x0000000008001374                st7735s_initial
+                0x0000000008001280      0x1dc ./user/hardware/lcd/at32_video_ev_lcd.o
+                0x0000000008001280                st7735s_initial
  .text.lcd_init
-                0x000000000800155c       0x4c ./user/hardware/lcd/at32_video_ev_lcd.o
-                0x000000000800155c                lcd_init
+                0x000000000800145c       0x4c ./user/hardware/lcd/at32_video_ev_lcd.o
+                0x000000000800145c                lcd_init
+ .text.lcd_clear
+                0x00000000080014a8       0x3c ./user/hardware/lcd/at32_video_ev_lcd.o
+                0x00000000080014a8                lcd_clear
  .text.system_clock_config
-                0x00000000080015a8       0x7a ./user/at32f403a_407_clock.o
-                0x00000000080015a8                system_clock_config
+                0x00000000080014e4       0x7a ./user/at32f403a_407_clock.o
+                0x00000000080014e4                system_clock_config
  .text.NMI_Handler
-                0x0000000008001622        0xe ./user/at32f403a_407_int.o
-                0x0000000008001622                NMI_Handler
+                0x000000000800155e        0xe ./user/at32f403a_407_int.o
+                0x000000000800155e                NMI_Handler
  .text.HardFault_Handler
-                0x0000000008001630        0x6 ./user/at32f403a_407_int.o
-                0x0000000008001630                HardFault_Handler
+                0x000000000800156c        0x6 ./user/at32f403a_407_int.o
+                0x000000000800156c                HardFault_Handler
  .text.MemManage_Handler
-                0x0000000008001636        0x6 ./user/at32f403a_407_int.o
-                0x0000000008001636                MemManage_Handler
+                0x0000000008001572        0x6 ./user/at32f403a_407_int.o
+                0x0000000008001572                MemManage_Handler
  .text.BusFault_Handler
-                0x000000000800163c        0x6 ./user/at32f403a_407_int.o
-                0x000000000800163c                BusFault_Handler
+                0x0000000008001578        0x6 ./user/at32f403a_407_int.o
+                0x0000000008001578                BusFault_Handler
  .text.UsageFault_Handler
-                0x0000000008001642        0x6 ./user/at32f403a_407_int.o
-                0x0000000008001642                UsageFault_Handler
+                0x000000000800157e        0x6 ./user/at32f403a_407_int.o
+                0x000000000800157e                UsageFault_Handler
  .text.SVC_Handler
-                0x0000000008001648        0xe ./user/at32f403a_407_int.o
-                0x0000000008001648                SVC_Handler
+                0x0000000008001584        0xe ./user/at32f403a_407_int.o
+                0x0000000008001584                SVC_Handler
  .text.DebugMon_Handler
-                0x0000000008001656        0xe ./user/at32f403a_407_int.o
-                0x0000000008001656                DebugMon_Handler
+                0x0000000008001592        0xe ./user/at32f403a_407_int.o
+                0x0000000008001592                DebugMon_Handler
  .text.PendSV_Handler
-                0x0000000008001664        0xe ./user/at32f403a_407_int.o
-                0x0000000008001664                PendSV_Handler
+                0x00000000080015a0        0xe ./user/at32f403a_407_int.o
+                0x00000000080015a0                PendSV_Handler
  .text.SysTick_Handler
-                0x0000000008001672        0xe ./user/at32f403a_407_int.o
-                0x0000000008001672                SysTick_Handler
+                0x00000000080015ae        0xe ./user/at32f403a_407_int.o
+                0x00000000080015ae                SysTick_Handler
  .text.lcd_display_initial_info
-                0x0000000008001680      0x17c ./user/main.o
-                0x0000000008001680                lcd_display_initial_info
- .text.main     0x00000000080017fc       0x30 ./user/main.o
-                0x00000000080017fc                main
+                0x00000000080015bc      0x170 ./user/main.o
+                0x00000000080015bc                lcd_display_initial_info
+ .text.main     0x000000000800172c       0x30 ./user/main.o
+                0x000000000800172c                main
  .text.crm_configuration
-                0x000000000800182c       0xe0 ./user/main.o
-                0x000000000800182c                crm_configuration
+                0x000000000800175c       0xe0 ./user/main.o
+                0x000000000800175c                crm_configuration
  .text.nvic_configuration
-                0x000000000800190c       0x18 ./user/main.o
-                0x000000000800190c                nvic_configuration
+                0x000000000800183c       0x18 ./user/main.o
+                0x000000000800183c                nvic_configuration
  .text.crm_reset
-                0x0000000008001924       0x6c ./firmware/at32f403a_407_crm.o
-                0x0000000008001924                crm_reset
+                0x0000000008001854       0x6c ./firmware/at32f403a_407_crm.o
+                0x0000000008001854                crm_reset
  .text.crm_flag_get
-                0x0000000008001990       0x50 ./firmware/at32f403a_407_crm.o
-                0x0000000008001990                crm_flag_get
+                0x00000000080018c0       0x50 ./firmware/at32f403a_407_crm.o
+                0x00000000080018c0                crm_flag_get
  .text.crm_hext_stable_wait
-                0x00000000080019e0       0x4a ./firmware/at32f403a_407_crm.o
-                0x00000000080019e0                crm_hext_stable_wait
+                0x0000000008001910       0x4a ./firmware/at32f403a_407_crm.o
+                0x0000000008001910                crm_hext_stable_wait
  .text.crm_periph_clock_enable
-                0x0000000008001a2a       0x7c ./firmware/at32f403a_407_crm.o
-                0x0000000008001a2a                crm_periph_clock_enable
- *fill*         0x0000000008001aa6        0x2 
+                0x000000000800195a       0x7c ./firmware/at32f403a_407_crm.o
+                0x000000000800195a                crm_periph_clock_enable
+ *fill*         0x00000000080019d6        0x2 
  .text.crm_clock_source_enable
-                0x0000000008001aa8       0xa8 ./firmware/at32f403a_407_crm.o
-                0x0000000008001aa8                crm_clock_source_enable
+                0x00000000080019d8       0xa8 ./firmware/at32f403a_407_crm.o
+                0x00000000080019d8                crm_clock_source_enable
  .text.crm_ahb_div_set
-                0x0000000008001b50       0x2c ./firmware/at32f403a_407_crm.o
-                0x0000000008001b50                crm_ahb_div_set
+                0x0000000008001a80       0x2c ./firmware/at32f403a_407_crm.o
+                0x0000000008001a80                crm_ahb_div_set
  .text.crm_apb1_div_set
-                0x0000000008001b7c       0x2c ./firmware/at32f403a_407_crm.o
-                0x0000000008001b7c                crm_apb1_div_set
+                0x0000000008001aac       0x2c ./firmware/at32f403a_407_crm.o
+                0x0000000008001aac                crm_apb1_div_set
  .text.crm_apb2_div_set
-                0x0000000008001ba8       0x2c ./firmware/at32f403a_407_crm.o
-                0x0000000008001ba8                crm_apb2_div_set
+                0x0000000008001ad8       0x2c ./firmware/at32f403a_407_crm.o
+                0x0000000008001ad8                crm_apb2_div_set
  .text.crm_pll_config
-                0x0000000008001bd4       0x9c ./firmware/at32f403a_407_crm.o
-                0x0000000008001bd4                crm_pll_config
+                0x0000000008001b04       0x9c ./firmware/at32f403a_407_crm.o
+                0x0000000008001b04                crm_pll_config
  .text.crm_sysclk_switch
-                0x0000000008001c70       0x54 ./firmware/at32f403a_407_crm.o
-                0x0000000008001c70                crm_sysclk_switch
+                0x0000000008001ba0       0x54 ./firmware/at32f403a_407_crm.o
+                0x0000000008001ba0                crm_sysclk_switch
  .text.crm_sysclk_switch_status_get
-                0x0000000008001cc4       0x1c ./firmware/at32f403a_407_crm.o
-                0x0000000008001cc4                crm_sysclk_switch_status_get
+                0x0000000008001bf4       0x1c ./firmware/at32f403a_407_crm.o
+                0x0000000008001bf4                crm_sysclk_switch_status_get
  .text.crm_clocks_freq_get
-                0x0000000008001ce0      0x1d4 ./firmware/at32f403a_407_crm.o
-                0x0000000008001ce0                crm_clocks_freq_get
+                0x0000000008001c10      0x1d4 ./firmware/at32f403a_407_crm.o
+                0x0000000008001c10                crm_clocks_freq_get
  .text.crm_auto_step_mode_enable
-                0x0000000008001eb4       0x38 ./firmware/at32f403a_407_crm.o
-                0x0000000008001eb4                crm_auto_step_mode_enable
+                0x0000000008001de4       0x38 ./firmware/at32f403a_407_crm.o
+                0x0000000008001de4                crm_auto_step_mode_enable
  .text.crm_hext_clock_div_set
-                0x0000000008001eec       0x2c ./firmware/at32f403a_407_crm.o
-                0x0000000008001eec                crm_hext_clock_div_set
+                0x0000000008001e1c       0x2c ./firmware/at32f403a_407_crm.o
+                0x0000000008001e1c                crm_hext_clock_div_set
  .text.dma_reset
-                0x0000000008001f18       0xac ./firmware/at32f403a_407_dma.o
-                0x0000000008001f18                dma_reset
+                0x0000000008001e48       0xac ./firmware/at32f403a_407_dma.o
+                0x0000000008001e48                dma_reset
  .text.dma_interrupt_enable
-                0x0000000008001fc4       0x3c ./firmware/at32f403a_407_dma.o
-                0x0000000008001fc4                dma_interrupt_enable
+                0x0000000008001ef4       0x3c ./firmware/at32f403a_407_dma.o
+                0x0000000008001ef4                dma_interrupt_enable
  .text.dma_flag_clear
-                0x0000000008002000       0x38 ./firmware/at32f403a_407_dma.o
-                0x0000000008002000                dma_flag_clear
+                0x0000000008001f30       0x38 ./firmware/at32f403a_407_dma.o
+                0x0000000008001f30                dma_flag_clear
  .text.dma_init
-                0x0000000008002038       0xc4 ./firmware/at32f403a_407_dma.o
-                0x0000000008002038                dma_init
+                0x0000000008001f68       0xc4 ./firmware/at32f403a_407_dma.o
+                0x0000000008001f68                dma_init
  .text.gpio_init
-                0x00000000080020fc      0x138 ./firmware/at32f403a_407_gpio.o
-                0x00000000080020fc                gpio_init
+                0x000000000800202c      0x138 ./firmware/at32f403a_407_gpio.o
+                0x000000000800202c                gpio_init
  .text.gpio_default_para_init
-                0x0000000008002234       0x34 ./firmware/at32f403a_407_gpio.o
-                0x0000000008002234                gpio_default_para_init
+                0x0000000008002164       0x34 ./firmware/at32f403a_407_gpio.o
+                0x0000000008002164                gpio_default_para_init
  .text.gpio_pin_remap_config
-                0x0000000008002268       0x98 ./firmware/at32f403a_407_gpio.o
-                0x0000000008002268                gpio_pin_remap_config
+                0x0000000008002198       0x98 ./firmware/at32f403a_407_gpio.o
+                0x0000000008002198                gpio_pin_remap_config
  .text.__NVIC_SetPriorityGrouping
-                0x0000000008002300       0x48 ./firmware/at32f403a_407_misc.o
+                0x0000000008002230       0x48 ./firmware/at32f403a_407_misc.o
  .text.__NVIC_GetPriorityGrouping
-                0x0000000008002348       0x1c ./firmware/at32f403a_407_misc.o
+                0x0000000008002278       0x1c ./firmware/at32f403a_407_misc.o
  .text.__NVIC_EnableIRQ
-                0x0000000008002364       0x3c ./firmware/at32f403a_407_misc.o
+                0x0000000008002294       0x3c ./firmware/at32f403a_407_misc.o
  .text.__NVIC_SetPriority
-                0x00000000080023a0       0x54 ./firmware/at32f403a_407_misc.o
+                0x00000000080022d0       0x54 ./firmware/at32f403a_407_misc.o
  .text.NVIC_EncodePriority
-                0x00000000080023f4       0x66 ./firmware/at32f403a_407_misc.o
+                0x0000000008002324       0x66 ./firmware/at32f403a_407_misc.o
  .text.nvic_irq_enable
-                0x000000000800245a       0x42 ./firmware/at32f403a_407_misc.o
-                0x000000000800245a                nvic_irq_enable
+                0x000000000800238a       0x42 ./firmware/at32f403a_407_misc.o
+                0x000000000800238a                nvic_irq_enable
  .text.nvic_priority_group_config
-                0x000000000800249c       0x1a ./firmware/at32f403a_407_misc.o
-                0x000000000800249c                nvic_priority_group_config
- *fill*         0x00000000080024b6        0x2 
+                0x00000000080023cc       0x1a ./firmware/at32f403a_407_misc.o
+                0x00000000080023cc                nvic_priority_group_config
+ *fill*         0x00000000080023e6        0x2 
  .text.systick_clock_source_config
-                0x00000000080024b8       0x3c ./firmware/at32f403a_407_misc.o
-                0x00000000080024b8                systick_clock_source_config
+                0x00000000080023e8       0x3c ./firmware/at32f403a_407_misc.o
+                0x00000000080023e8                systick_clock_source_config
  .text.spi_default_para_init
-                0x00000000080024f4       0x44 ./firmware/at32f403a_407_spi.o
-                0x00000000080024f4                spi_default_para_init
+                0x0000000008002424       0x44 ./firmware/at32f403a_407_spi.o
+                0x0000000008002424                spi_default_para_init
  .text.spi_init
-                0x0000000008002538      0x1a2 ./firmware/at32f403a_407_spi.o
-                0x0000000008002538                spi_init
+                0x0000000008002468      0x1a2 ./firmware/at32f403a_407_spi.o
+                0x0000000008002468                spi_init
  .text.spi_frame_bit_num_set
-                0x00000000080026da       0x2a ./firmware/at32f403a_407_spi.o
-                0x00000000080026da                spi_frame_bit_num_set
+                0x000000000800260a       0x2a ./firmware/at32f403a_407_spi.o
+                0x000000000800260a                spi_frame_bit_num_set
  .text.spi_enable
-                0x0000000008002704       0x2a ./firmware/at32f403a_407_spi.o
-                0x0000000008002704                spi_enable
+                0x0000000008002634       0x2a ./firmware/at32f403a_407_spi.o
+                0x0000000008002634                spi_enable
  .text.spi_i2s_dma_transmitter_enable
-                0x000000000800272e       0x2a ./firmware/at32f403a_407_spi.o
-                0x000000000800272e                spi_i2s_dma_transmitter_enable
+                0x000000000800265e       0x2a ./firmware/at32f403a_407_spi.o
+                0x000000000800265e                spi_i2s_dma_transmitter_enable
  .text.spi_i2s_data_transmit
-                0x0000000008002758       0x1e ./firmware/at32f403a_407_spi.o
-                0x0000000008002758                spi_i2s_data_transmit
+                0x0000000008002688       0x1e ./firmware/at32f403a_407_spi.o
+                0x0000000008002688                spi_i2s_data_transmit
  .text.spi_i2s_flag_get
-                0x0000000008002776       0x32 ./firmware/at32f403a_407_spi.o
-                0x0000000008002776                spi_i2s_flag_get
+                0x00000000080026a6       0x32 ./firmware/at32f403a_407_spi.o
+                0x00000000080026a6                spi_i2s_flag_get
  .text.usart_init
-                0x00000000080027a8       0xe0 ./firmware/at32f403a_407_usart.o
-                0x00000000080027a8                usart_init
+                0x00000000080026d8       0xe0 ./firmware/at32f403a_407_usart.o
+                0x00000000080026d8                usart_init
  .text.usart_enable
-                0x0000000008002888       0x2a ./firmware/at32f403a_407_usart.o
-                0x0000000008002888                usart_enable
+                0x00000000080027b8       0x2a ./firmware/at32f403a_407_usart.o
+                0x00000000080027b8                usart_enable
  .text.usart_transmitter_enable
-                0x00000000080028b2       0x2a ./firmware/at32f403a_407_usart.o
-                0x00000000080028b2                usart_transmitter_enable
+                0x00000000080027e2       0x2a ./firmware/at32f403a_407_usart.o
+                0x00000000080027e2                usart_transmitter_enable
  .text.usart_data_transmit
-                0x00000000080028dc       0x22 ./firmware/at32f403a_407_usart.o
-                0x00000000080028dc                usart_data_transmit
+                0x000000000800280c       0x22 ./firmware/at32f403a_407_usart.o
+                0x000000000800280c                usart_data_transmit
  .text.usart_flag_get
-                0x00000000080028fe       0x28 ./firmware/at32f403a_407_usart.o
-                0x00000000080028fe                usart_flag_get
- *fill*         0x0000000008002926        0x2 
+                0x000000000800282e       0x28 ./firmware/at32f403a_407_usart.o
+                0x000000000800282e                usart_flag_get
+ *fill*         0x0000000008002856        0x2 
  .text.Reset_Handler
-                0x0000000008002928       0x48 ./cmsis/startup_at32f403a_407.o
-                0x0000000008002928                Reset_Handler
+                0x0000000008002858       0x48 ./cmsis/startup_at32f403a_407.o
+                0x0000000008002858                Reset_Handler
  .text.Default_Handler
-                0x0000000008002970        0x2 ./cmsis/startup_at32f403a_407.o
-                0x0000000008002970                SDIO1_IRQHandler
-                0x0000000008002970                XMC_IRQHandler
-                0x0000000008002970                EXINT2_IRQHandler
-                0x0000000008002970                USBFS_L_CAN1_RX0_IRQHandler
-                0x0000000008002970                UART8_IRQHandler
-                0x0000000008002970                SPI4_IRQHandler
-                0x0000000008002970                I2C2_EVT_IRQHandler
-                0x0000000008002970                TMR1_OVF_TMR10_IRQHandler
-                0x0000000008002970                TMR8_TRG_HALL_TMR14_IRQHandler
-                0x0000000008002970                USBFS_H_CAN1_TX_IRQHandler
-                0x0000000008002970                I2C1_ERR_IRQHandler
-                0x0000000008002970                EXINT9_5_IRQHandler
-                0x0000000008002970                EMAC_IRQHandler
-                0x0000000008002970                CAN2_RX1_IRQHandler
-                0x0000000008002970                TMR5_GLOBAL_IRQHandler
-                0x0000000008002970                SDIO2_IRQHandler
-                0x0000000008002970                ADC1_2_IRQHandler
-                0x0000000008002970                SPI1_IRQHandler
-                0x0000000008002970                TAMPER_IRQHandler
-                0x0000000008002970                CAN2_RX0_IRQHandler
-                0x0000000008002970                DMA2_Channel2_IRQHandler
-                0x0000000008002970                DMA1_Channel4_IRQHandler
-                0x0000000008002970                TMR8_CH_IRQHandler
-                0x0000000008002970                USART6_IRQHandler
-                0x0000000008002970                EXINT0_IRQHandler
-                0x0000000008002970                USART3_IRQHandler
-                0x0000000008002970                RTC_IRQHandler
-                0x0000000008002970                DMA1_Channel7_IRQHandler
-                0x0000000008002970                CAN1_RX1_IRQHandler
-                0x0000000008002970                UART5_IRQHandler
-                0x0000000008002970                ADC3_IRQHandler
-                0x0000000008002970                ACC_IRQHandler
-                0x0000000008002970                EMAC_WKUP_IRQHandler
-                0x0000000008002970                DMA2_Channel1_IRQHandler
-                0x0000000008002970                EXINT3_IRQHandler
-                0x0000000008002970                DMA1_Channel6_IRQHandler
-                0x0000000008002970                UART4_IRQHandler
-                0x0000000008002970                DMA1_Channel1_IRQHandler
-                0x0000000008002970                Default_Handler
-                0x0000000008002970                USBFS_MAPH_IRQHandler
-                0x0000000008002970                TMR3_GLOBAL_IRQHandler
-                0x0000000008002970                TMR7_GLOBAL_IRQHandler
-                0x0000000008002970                CAN1_SE_IRQHandler
-                0x0000000008002970                CAN2_TX_IRQHandler
-                0x0000000008002970                I2C3_ERR_IRQHandler
-                0x0000000008002970                SPI3_I2S3EXT_IRQHandler
-                0x0000000008002970                TMR1_BRK_TMR9_IRQHandler
-                0x0000000008002970                USBFS_MAPL_IRQHandler
-                0x0000000008002970                TMR8_BRK_TMR12_IRQHandler
-                0x0000000008002970                TMR1_TRG_HALL_TMR11_IRQHandler
-                0x0000000008002970                DMA1_Channel5_IRQHandler
-                0x0000000008002970                TMR4_GLOBAL_IRQHandler
-                0x0000000008002970                EXINT4_IRQHandler
-                0x0000000008002970                CAN2_SE_IRQHandler
-                0x0000000008002970                DMA2_Channel6_7_IRQHandler
-                0x0000000008002970                PVM_IRQHandler
-                0x0000000008002970                I2C3_EVT_IRQHandler
-                0x0000000008002970                DMA1_Channel3_IRQHandler
-                0x0000000008002970                I2C1_EVT_IRQHandler
-                0x0000000008002970                TMR8_OVF_TMR13_IRQHandler
-                0x0000000008002970                TMR6_GLOBAL_IRQHandler
-                0x0000000008002970                EXINT1_IRQHandler
-                0x0000000008002970                RTCAlarm_IRQHandler
-                0x0000000008002970                DMA2_Channel4_5_IRQHandler
-                0x0000000008002970                UART7_IRQHandler
-                0x0000000008002970                USART2_IRQHandler
-                0x0000000008002970                DMA1_Channel2_IRQHandler
-                0x0000000008002970                TMR2_GLOBAL_IRQHandler
-                0x0000000008002970                FLASH_IRQHandler
-                0x0000000008002970                SPI2_I2S2EXT_IRQHandler
-                0x0000000008002970                I2C2_ERR_IRQHandler
-                0x0000000008002970                USBFSWakeUp_IRQHandler
-                0x0000000008002970                USART1_IRQHandler
-                0x0000000008002970                TMR1_CH_IRQHandler
-                0x0000000008002970                CRM_IRQHandler
-                0x0000000008002970                EXINT15_10_IRQHandler
-                0x0000000008002970                WWDT_IRQHandler
-                0x0000000008002970                DMA2_Channel3_IRQHandler
- *fill*         0x0000000008002972        0x2 
+                0x00000000080028a0        0x2 ./cmsis/startup_at32f403a_407.o
+                0x00000000080028a0                SDIO1_IRQHandler
+                0x00000000080028a0                XMC_IRQHandler
+                0x00000000080028a0                EXINT2_IRQHandler
+                0x00000000080028a0                USBFS_L_CAN1_RX0_IRQHandler
+                0x00000000080028a0                UART8_IRQHandler
+                0x00000000080028a0                SPI4_IRQHandler
+                0x00000000080028a0                I2C2_EVT_IRQHandler
+                0x00000000080028a0                TMR1_OVF_TMR10_IRQHandler
+                0x00000000080028a0                TMR8_TRG_HALL_TMR14_IRQHandler
+                0x00000000080028a0                USBFS_H_CAN1_TX_IRQHandler
+                0x00000000080028a0                I2C1_ERR_IRQHandler
+                0x00000000080028a0                EXINT9_5_IRQHandler
+                0x00000000080028a0                EMAC_IRQHandler
+                0x00000000080028a0                CAN2_RX1_IRQHandler
+                0x00000000080028a0                TMR5_GLOBAL_IRQHandler
+                0x00000000080028a0                SDIO2_IRQHandler
+                0x00000000080028a0                ADC1_2_IRQHandler
+                0x00000000080028a0                SPI1_IRQHandler
+                0x00000000080028a0                TAMPER_IRQHandler
+                0x00000000080028a0                CAN2_RX0_IRQHandler
+                0x00000000080028a0                DMA2_Channel2_IRQHandler
+                0x00000000080028a0                DMA1_Channel4_IRQHandler
+                0x00000000080028a0                TMR8_CH_IRQHandler
+                0x00000000080028a0                USART6_IRQHandler
+                0x00000000080028a0                EXINT0_IRQHandler
+                0x00000000080028a0                USART3_IRQHandler
+                0x00000000080028a0                RTC_IRQHandler
+                0x00000000080028a0                DMA1_Channel7_IRQHandler
+                0x00000000080028a0                CAN1_RX1_IRQHandler
+                0x00000000080028a0                UART5_IRQHandler
+                0x00000000080028a0                ADC3_IRQHandler
+                0x00000000080028a0                ACC_IRQHandler
+                0x00000000080028a0                EMAC_WKUP_IRQHandler
+                0x00000000080028a0                DMA2_Channel1_IRQHandler
+                0x00000000080028a0                EXINT3_IRQHandler
+                0x00000000080028a0                DMA1_Channel6_IRQHandler
+                0x00000000080028a0                UART4_IRQHandler
+                0x00000000080028a0                DMA1_Channel1_IRQHandler
+                0x00000000080028a0                Default_Handler
+                0x00000000080028a0                USBFS_MAPH_IRQHandler
+                0x00000000080028a0                TMR3_GLOBAL_IRQHandler
+                0x00000000080028a0                TMR7_GLOBAL_IRQHandler
+                0x00000000080028a0                CAN1_SE_IRQHandler
+                0x00000000080028a0                CAN2_TX_IRQHandler
+                0x00000000080028a0                I2C3_ERR_IRQHandler
+                0x00000000080028a0                SPI3_I2S3EXT_IRQHandler
+                0x00000000080028a0                TMR1_BRK_TMR9_IRQHandler
+                0x00000000080028a0                USBFS_MAPL_IRQHandler
+                0x00000000080028a0                TMR8_BRK_TMR12_IRQHandler
+                0x00000000080028a0                TMR1_TRG_HALL_TMR11_IRQHandler
+                0x00000000080028a0                DMA1_Channel5_IRQHandler
+                0x00000000080028a0                TMR4_GLOBAL_IRQHandler
+                0x00000000080028a0                EXINT4_IRQHandler
+                0x00000000080028a0                CAN2_SE_IRQHandler
+                0x00000000080028a0                DMA2_Channel6_7_IRQHandler
+                0x00000000080028a0                PVM_IRQHandler
+                0x00000000080028a0                I2C3_EVT_IRQHandler
+                0x00000000080028a0                DMA1_Channel3_IRQHandler
+                0x00000000080028a0                I2C1_EVT_IRQHandler
+                0x00000000080028a0                TMR8_OVF_TMR13_IRQHandler
+                0x00000000080028a0                TMR6_GLOBAL_IRQHandler
+                0x00000000080028a0                EXINT1_IRQHandler
+                0x00000000080028a0                RTCAlarm_IRQHandler
+                0x00000000080028a0                DMA2_Channel4_5_IRQHandler
+                0x00000000080028a0                UART7_IRQHandler
+                0x00000000080028a0                USART2_IRQHandler
+                0x00000000080028a0                DMA1_Channel2_IRQHandler
+                0x00000000080028a0                TMR2_GLOBAL_IRQHandler
+                0x00000000080028a0                FLASH_IRQHandler
+                0x00000000080028a0                SPI2_I2S2EXT_IRQHandler
+                0x00000000080028a0                I2C2_ERR_IRQHandler
+                0x00000000080028a0                USBFSWakeUp_IRQHandler
+                0x00000000080028a0                USART1_IRQHandler
+                0x00000000080028a0                TMR1_CH_IRQHandler
+                0x00000000080028a0                CRM_IRQHandler
+                0x00000000080028a0                EXINT15_10_IRQHandler
+                0x00000000080028a0                WWDT_IRQHandler
+                0x00000000080028a0                DMA2_Channel3_IRQHandler
+ *fill*         0x00000000080028a2        0x2 
  .text.SystemInit
-                0x0000000008002974       0x88 ./cmsis/system_at32f403a_407.o
-                0x0000000008002974                SystemInit
+                0x00000000080028a4       0x88 ./cmsis/system_at32f403a_407.o
+                0x00000000080028a4                SystemInit
  .text.system_core_clock_update
-                0x00000000080029fc      0x150 ./cmsis/system_at32f403a_407.o
-                0x00000000080029fc                system_core_clock_update
- .text._write   0x0000000008002b4c       0x60 ./bsp/at32f403a_407_board.o
-                0x0000000008002b4c                _write
+                0x000000000800292c      0x150 ./cmsis/system_at32f403a_407.o
+                0x000000000800292c                system_core_clock_update
+ .text._write   0x0000000008002a7c       0x60 ./bsp/at32f403a_407_board.o
+                0x0000000008002a7c                _write
  .text.uart_print_init
-                0x0000000008002bac       0x8c ./bsp/at32f403a_407_board.o
-                0x0000000008002bac                uart_print_init
+                0x0000000008002adc       0x8c ./bsp/at32f403a_407_board.o
+                0x0000000008002adc                uart_print_init
  .text.delay_init
-                0x0000000008002c38       0x40 ./bsp/at32f403a_407_board.o
-                0x0000000008002c38                delay_init
+                0x0000000008002b68       0x40 ./bsp/at32f403a_407_board.o
+                0x0000000008002b68                delay_init
  .text.delay_ms
-                0x0000000008002c78       0x98 ./bsp/at32f403a_407_board.o
-                0x0000000008002c78                delay_ms
+                0x0000000008002ba8       0x98 ./bsp/at32f403a_407_board.o
+                0x0000000008002ba8                delay_ms
  .text.__libc_init_array
-                0x0000000008002d10       0x48 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-init.o)
-                0x0000000008002d10                __libc_init_array
- .text.memset   0x0000000008002d58       0x10 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-memset.o)
-                0x0000000008002d58                memset
- .text._puts_r  0x0000000008002d68       0xdc /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-puts.o)
-                0x0000000008002d68                _puts_r
- .text.puts     0x0000000008002e44       0x10 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-puts.o)
-                0x0000000008002e44                puts
- .text.setvbuf  0x0000000008002e54      0x18c /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-setvbuf.o)
-                0x0000000008002e54                setvbuf
+                0x0000000008002c40       0x48 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-init.o)
+                0x0000000008002c40                __libc_init_array
+ .text.memset   0x0000000008002c88       0x10 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-memset.o)
+                0x0000000008002c88                memset
+ .text._puts_r  0x0000000008002c98       0xdc /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-puts.o)
+                0x0000000008002c98                _puts_r
+ .text.puts     0x0000000008002d74       0x10 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-puts.o)
+                0x0000000008002d74                puts
+ .text.setvbuf  0x0000000008002d84      0x18c /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-setvbuf.o)
+                0x0000000008002d84                setvbuf
  .text.__swbuf_r
-                0x0000000008002fe0       0xa4 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-wbuf.o)
-                0x0000000008002fe0                __swbuf_r
+                0x0000000008002f10       0xa4 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-wbuf.o)
+                0x0000000008002f10                __swbuf_r
  .text.__swsetup_r
-                0x0000000008003084       0xdc /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-wsetup.o)
-                0x0000000008003084                __swsetup_r
+                0x0000000008002fb4       0xdc /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-wsetup.o)
+                0x0000000008002fb4                __swsetup_r
  .text.__sflush_r
-                0x0000000008003160      0x10c /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-fflush.o)
-                0x0000000008003160                __sflush_r
+                0x0000000008003090      0x10c /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-fflush.o)
+                0x0000000008003090                __sflush_r
  .text._fflush_r
-                0x000000000800326c       0x78 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-fflush.o)
-                0x000000000800326c                _fflush_r
- .text.std      0x00000000080032e4       0x48 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-findfp.o)
+                0x000000000800319c       0x78 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-fflush.o)
+                0x000000000800319c                _fflush_r
+ .text.std      0x0000000008003214       0x48 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-findfp.o)
  .text._cleanup_r
-                0x000000000800332c        0xc /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-findfp.o)
-                0x000000000800332c                _cleanup_r
+                0x000000000800325c        0xc /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-findfp.o)
+                0x000000000800325c                _cleanup_r
  .text.__sfmoreglue
-                0x0000000008003338       0x2c /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-findfp.o)
-                0x0000000008003338                __sfmoreglue
+                0x0000000008003268       0x2c /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-findfp.o)
+                0x0000000008003268                __sfmoreglue
  .text.__sfp_lock_acquire
-                0x0000000008003364        0xc /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-findfp.o)
-                0x0000000008003364                __sfp_lock_acquire
+                0x0000000008003294        0xc /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-findfp.o)
+                0x0000000008003294                __sfp_lock_acquire
  .text.__sfp_lock_release
-                0x0000000008003370        0xc /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-findfp.o)
-                0x0000000008003370                __sfp_lock_release
+                0x00000000080032a0        0xc /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-findfp.o)
+                0x00000000080032a0                __sfp_lock_release
  .text.__sinit_lock_acquire
-                0x000000000800337c        0xc /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-findfp.o)
-                0x000000000800337c                __sinit_lock_acquire
+                0x00000000080032ac        0xc /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-findfp.o)
+                0x00000000080032ac                __sinit_lock_acquire
  .text.__sinit_lock_release
-                0x0000000008003388        0xc /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-findfp.o)
-                0x0000000008003388                __sinit_lock_release
- .text.__sinit  0x0000000008003394       0x70 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-findfp.o)
-                0x0000000008003394                __sinit
- .text.__sfp    0x0000000008003404       0x8c /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-findfp.o)
-                0x0000000008003404                __sfp
+                0x00000000080032b8        0xc /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-findfp.o)
+                0x00000000080032b8                __sinit_lock_release
+ .text.__sinit  0x00000000080032c4       0x70 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-findfp.o)
+                0x00000000080032c4                __sinit
+ .text.__sfp    0x0000000008003334       0x8c /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-findfp.o)
+                0x0000000008003334                __sfp
  .text._fwalk_reent
-                0x0000000008003490       0x3e /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-fwalk.o)
-                0x0000000008003490                _fwalk_reent
+                0x00000000080033c0       0x3e /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-fwalk.o)
+                0x00000000080033c0                _fwalk_reent
  .text.__retarget_lock_init_recursive
-                0x00000000080034ce        0x2 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-lock.o)
-                0x00000000080034ce                __retarget_lock_init_recursive
+                0x00000000080033fe        0x2 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-lock.o)
+                0x00000000080033fe                __retarget_lock_init_recursive
  .text.__retarget_lock_acquire_recursive
-                0x00000000080034d0        0x2 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-lock.o)
-                0x00000000080034d0                __retarget_lock_acquire_recursive
+                0x0000000008003400        0x2 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-lock.o)
+                0x0000000008003400                __retarget_lock_acquire_recursive
  .text.__retarget_lock_release_recursive
-                0x00000000080034d2        0x2 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-lock.o)
-                0x00000000080034d2                __retarget_lock_release_recursive
+                0x0000000008003402        0x2 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-lock.o)
+                0x0000000008003402                __retarget_lock_release_recursive
  .text.__swhatbuf_r
-                0x00000000080034d4       0x4a /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-makebuf.o)
-                0x00000000080034d4                __swhatbuf_r
- *fill*         0x000000000800351e        0x2 
+                0x0000000008003404       0x4a /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-makebuf.o)
+                0x0000000008003404                __swhatbuf_r
+ *fill*         0x000000000800344e        0x2 
  .text.__smakebuf_r
-                0x0000000008003520       0x80 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-makebuf.o)
-                0x0000000008003520                __smakebuf_r
- .text.malloc   0x00000000080035a0       0x10 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-malloc.o)
-                0x00000000080035a0                malloc
- .text._free_r  0x00000000080035b0       0x98 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-nano-freer.o)
-                0x00000000080035b0                _free_r
+                0x0000000008003450       0x80 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-makebuf.o)
+                0x0000000008003450                __smakebuf_r
+ .text.malloc   0x00000000080034d0       0x10 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-malloc.o)
+                0x00000000080034d0                malloc
+ .text._free_r  0x00000000080034e0       0x98 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-nano-freer.o)
+                0x00000000080034e0                _free_r
  .text.sbrk_aligned
-                0x0000000008003648       0x40 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-nano-mallocr.o)
+                0x0000000008003578       0x40 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-nano-mallocr.o)
  .text._malloc_r
-                0x0000000008003688       0xe8 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-nano-mallocr.o)
-                0x0000000008003688                _malloc_r
- .text._sbrk_r  0x0000000008003770       0x20 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-sbrkr.o)
-                0x0000000008003770                _sbrk_r
- .text.__sread  0x0000000008003790       0x22 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-stdio.o)
-                0x0000000008003790                __sread
+                0x00000000080035b8       0xe8 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-nano-mallocr.o)
+                0x00000000080035b8                _malloc_r
+ .text._sbrk_r  0x00000000080036a0       0x20 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-sbrkr.o)
+                0x00000000080036a0                _sbrk_r
+ .text.__sread  0x00000000080036c0       0x22 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-stdio.o)
+                0x00000000080036c0                __sread
  .text.__swrite
-                0x00000000080037b2       0x38 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-stdio.o)
-                0x00000000080037b2                __swrite
- .text.__sseek  0x00000000080037ea       0x24 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-stdio.o)
-                0x00000000080037ea                __sseek
+                0x00000000080036e2       0x38 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-stdio.o)
+                0x00000000080036e2                __swrite
+ .text.__sseek  0x000000000800371a       0x24 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-stdio.o)
+                0x000000000800371a                __sseek
  .text.__sclose
-                0x000000000800380e        0x8 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-stdio.o)
-                0x000000000800380e                __sclose
- *fill*         0x0000000008003816        0x2 
+                0x000000000800373e        0x8 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-stdio.o)
+                0x000000000800373e                __sclose
+ *fill*         0x0000000008003746        0x2 
  .text._write_r
-                0x0000000008003818       0x24 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-writer.o)
-                0x0000000008003818                _write_r
+                0x0000000008003748       0x24 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-writer.o)
+                0x0000000008003748                _write_r
  .text._close_r
-                0x000000000800383c       0x20 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-closer.o)
-                0x000000000800383c                _close_r
+                0x000000000800376c       0x20 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-closer.o)
+                0x000000000800376c                _close_r
  .text._fstat_r
-                0x000000000800385c       0x24 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-fstatr.o)
-                0x000000000800385c                _fstat_r
+                0x000000000800378c       0x24 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-fstatr.o)
+                0x000000000800378c                _fstat_r
  .text._isatty_r
-                0x0000000008003880       0x20 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-isattyr.o)
-                0x0000000008003880                _isatty_r
+                0x00000000080037b0       0x20 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-isattyr.o)
+                0x00000000080037b0                _isatty_r
  .text._lseek_r
-                0x00000000080038a0       0x24 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-lseekr.o)
-                0x00000000080038a0                _lseek_r
+                0x00000000080037d0       0x24 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-lseekr.o)
+                0x00000000080037d0                _lseek_r
  .text.__malloc_lock
-                0x00000000080038c4        0xc /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-mlock.o)
-                0x00000000080038c4                __malloc_lock
+                0x00000000080037f4        0xc /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-mlock.o)
+                0x00000000080037f4                __malloc_lock
  .text.__malloc_unlock
-                0x00000000080038d0        0xc /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-mlock.o)
-                0x00000000080038d0                __malloc_unlock
- .text._read_r  0x00000000080038dc       0x24 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-readr.o)
-                0x00000000080038dc                _read_r
- .text._close   0x0000000008003900       0x10 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a(close.o)
-                0x0000000008003900                _close
- .text._fstat   0x0000000008003910       0x10 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a(fstat.o)
-                0x0000000008003910                _fstat
- .text._isatty  0x0000000008003920       0x10 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a(isatty.o)
-                0x0000000008003920                _isatty
- .text._lseek   0x0000000008003930       0x10 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a(lseek.o)
-                0x0000000008003930                _lseek
- .text._read    0x0000000008003940       0x10 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a(read.o)
-                0x0000000008003940                _read
- .text._sbrk    0x0000000008003950       0x1c /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a(sbrk.o)
-                0x0000000008003950                _sbrk
+                0x0000000008003800        0xc /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-mlock.o)
+                0x0000000008003800                __malloc_unlock
+ .text._read_r  0x000000000800380c       0x24 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-readr.o)
+                0x000000000800380c                _read_r
+ .text._close   0x0000000008003830       0x10 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a(close.o)
+                0x0000000008003830                _close
+ .text._fstat   0x0000000008003840       0x10 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a(fstat.o)
+                0x0000000008003840                _fstat
+ .text._isatty  0x0000000008003850       0x10 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a(isatty.o)
+                0x0000000008003850                _isatty
+ .text._lseek   0x0000000008003860       0x10 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a(lseek.o)
+                0x0000000008003860                _lseek
+ .text._read    0x0000000008003870       0x10 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a(read.o)
+                0x0000000008003870                _read
+ .text._sbrk    0x0000000008003880       0x1c /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a(sbrk.o)
+                0x0000000008003880                _sbrk
  *(.glue_7)
- .glue_7        0x000000000800396c        0x0 linker stubs
+ .glue_7        0x000000000800389c        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x000000000800396c        0x0 linker stubs
+ .glue_7t       0x000000000800389c        0x0 linker stubs
  *(.eh_frame)
- .eh_frame      0x000000000800396c        0x0 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+ .eh_frame      0x000000000800389c        0x0 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
  *(.init)
- .init          0x000000000800396c        0x4 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crti.o
-                0x000000000800396c                _init
- .init          0x0000000008003970        0x8 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtn.o
+ .init          0x000000000800389c        0x4 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crti.o
+                0x000000000800389c                _init
+ .init          0x00000000080038a0        0x8 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtn.o
  *(.fini)
- .fini          0x0000000008003978        0x4 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crti.o
-                0x0000000008003978                _fini
- .fini          0x000000000800397c        0x8 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtn.o
-                0x0000000008003984                . = ALIGN (0x4)
-                0x0000000008003984                _etext = .
+ .fini          0x00000000080038a8        0x4 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crti.o
+                0x00000000080038a8                _fini
+ .fini          0x00000000080038ac        0x8 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtn.o
+                0x00000000080038b4                . = ALIGN (0x4)
+                0x00000000080038b4                _etext = .
 
-.vfp11_veneer   0x0000000008003984        0x0
- .vfp11_veneer  0x0000000008003984        0x0 linker stubs
+.vfp11_veneer   0x00000000080038b4        0x0
+ .vfp11_veneer  0x00000000080038b4        0x0 linker stubs
 
-.v4_bx          0x0000000008003984        0x0
- .v4_bx         0x0000000008003984        0x0 linker stubs
+.v4_bx          0x00000000080038b4        0x0
+ .v4_bx         0x00000000080038b4        0x0 linker stubs
 
-.iplt           0x0000000008003984        0x0
- .iplt          0x0000000008003984        0x0 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+.iplt           0x00000000080038b4        0x0
+ .iplt          0x00000000080038b4        0x0 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
 
-.rodata         0x0000000008003984     0xec28
-                0x0000000008003984                . = ALIGN (0x4)
+.rodata         0x00000000080038b4     0x4c28
+                0x00000000080038b4                . = ALIGN (0x4)
  *(.rodata)
- .rodata        0x0000000008003984     0x4ab4 ./user/hardware/lcd/at32_video_ev_font.o
-                0x0000000008003984                CHAR_INDEX_ARRAY_SIZE
-                0x0000000008003988                Montserrat_16
-                0x0000000008003990                Montserrat_12
-                0x0000000008003998                Montserrat_16_bitmap
-                0x0000000008005bcc                Montserrat_16_glf
-                0x00000000080065ec                Montserrat_12_bitmap
-                0x0000000008007a18                Montserrat_12_glf
- .rodata        0x0000000008008438     0xa000 ./user/images.o
-                0x0000000008008438                city
- .rodata        0x0000000008012438       0xd7 ./user/main.o
- *fill*         0x000000000801250f        0x1 
- .rodata        0x0000000008012510       0x28 ./firmware/at32f403a_407_crm.o
- .rodata        0x0000000008012538       0x10 ./cmsis/system_at32f403a_407.o
+ .rodata        0x00000000080038b4     0x4ab4 ./user/hardware/lcd/at32_video_ev_font.o
+                0x00000000080038b4                CHAR_INDEX_ARRAY_SIZE
+                0x00000000080038b8                Montserrat_16
+                0x00000000080038c0                Montserrat_12
+                0x00000000080038c8                Montserrat_16_bitmap
+                0x0000000008005afc                Montserrat_16_glf
+                0x000000000800651c                Montserrat_12_bitmap
+                0x0000000008007948                Montserrat_12_glf
+ .rodata        0x0000000008008368       0xd7 ./user/main.o
+ *fill*         0x000000000800843f        0x1 
+ .rodata        0x0000000008008440       0x28 ./firmware/at32f403a_407_crm.o
+ .rodata        0x0000000008008468       0x10 ./cmsis/system_at32f403a_407.o
  *(.rodata*)
  .rodata._global_impure_ptr
-                0x0000000008012548        0x4 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-impure.o)
-                0x0000000008012548                _global_impure_ptr
+                0x0000000008008478        0x4 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-impure.o)
+                0x0000000008008478                _global_impure_ptr
  .rodata.__sf_fake_stderr
-                0x000000000801254c       0x20 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-findfp.o)
-                0x000000000801254c                __sf_fake_stderr
+                0x000000000800847c       0x20 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-findfp.o)
+                0x000000000800847c                __sf_fake_stderr
  .rodata.__sf_fake_stdin
-                0x000000000801256c       0x20 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-findfp.o)
-                0x000000000801256c                __sf_fake_stdin
+                0x000000000800849c       0x20 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-findfp.o)
+                0x000000000800849c                __sf_fake_stdin
  .rodata.__sf_fake_stdout
-                0x000000000801258c       0x20 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-findfp.o)
-                0x000000000801258c                __sf_fake_stdout
-                0x00000000080125ac                . = ALIGN (0x4)
+                0x00000000080084bc       0x20 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-findfp.o)
+                0x00000000080084bc                __sf_fake_stdout
+                0x00000000080084dc                . = ALIGN (0x4)
 
-.rel.dyn        0x00000000080125ac        0x0
- .rel.iplt      0x00000000080125ac        0x0 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+.rel.dyn        0x00000000080084dc        0x0
+ .rel.iplt      0x00000000080084dc        0x0 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
 
-.ARM            0x00000000080125ac        0x0
-                0x00000000080125ac                __exidx_start = .
+.ARM            0x00000000080084dc        0x0
+                0x00000000080084dc                __exidx_start = .
  *(.ARM.exidx*)
-                0x00000000080125ac                __exidx_end = .
+                0x00000000080084dc                __exidx_end = .
 
-.preinit_array  0x00000000080125ac        0x0
-                0x00000000080125ac                PROVIDE (__preinit_array_start = .)
+.preinit_array  0x00000000080084dc        0x0
+                0x00000000080084dc                PROVIDE (__preinit_array_start = .)
  *(.preinit_array*)
-                0x00000000080125ac                PROVIDE (__preinit_array_end = .)
+                0x00000000080084dc                PROVIDE (__preinit_array_end = .)
 
-.init_array     0x00000000080125ac        0x4
-                0x00000000080125ac                PROVIDE (__init_array_start = .)
+.init_array     0x00000000080084dc        0x4
+                0x00000000080084dc                PROVIDE (__init_array_start = .)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array*)
- .init_array    0x00000000080125ac        0x4 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
-                0x00000000080125b0                PROVIDE (__init_array_end = .)
+ .init_array    0x00000000080084dc        0x4 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+                0x00000000080084e0                PROVIDE (__init_array_end = .)
 
-.fini_array     0x00000000080125b0        0x4
+.fini_array     0x00000000080084e0        0x4
                 [!provide]                        PROVIDE (__fini_array_start = .)
  *(SORT_BY_NAME(.fini_array.*))
  *(.fini_array*)
- .fini_array    0x00000000080125b0        0x4 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+ .fini_array    0x00000000080084e0        0x4 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
                 [!provide]                        PROVIDE (__fini_array_end = .)
-                0x00000000080125b4                _sidata = LOADADDR (.data)
+                0x00000000080084e4                _sidata = LOADADDR (.data)
 
-.data           0x0000000020000000      0x7f4 load address 0x00000000080125b4
+.data           0x0000000020000000      0x7f4 load address 0x00000000080084e4
                 0x0000000020000000                . = ALIGN (0x4)
                 0x0000000020000000                _sdata = .
  *(.data)
@@ -2156,7 +2163,7 @@ LOAD /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/.
                 0x0000000008400000                _spim_init_base = LOADADDR (.spim)
                 0x0000000000000000                _spim_init_length = SIZEOF (.spim)
 
-.igot.plt       0x00000000200007f4        0x0 load address 0x0000000008012da8
+.igot.plt       0x00000000200007f4        0x0 load address 0x0000000008008cd8
  .igot.plt      0x00000000200007f4        0x0 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
 
 .spim           0x0000000008400000        0x0
@@ -2241,134 +2248,130 @@ LOAD /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/.
  .ARM.attributes
                 0x0000000000000122       0x34 ./user/at32f403a_407_int.o
  .ARM.attributes
-                0x0000000000000156       0x34 ./user/images.o
+                0x0000000000000156       0x34 ./user/main.o
  .ARM.attributes
-                0x000000000000018a       0x34 ./user/main.o
+                0x000000000000018a       0x34 ./firmware/at32f403a_407_crm.o
  .ARM.attributes
-                0x00000000000001be       0x34 ./firmware/at32f403a_407_crm.o
+                0x00000000000001be       0x34 ./firmware/at32f403a_407_dma.o
  .ARM.attributes
-                0x00000000000001f2       0x34 ./firmware/at32f403a_407_dma.o
+                0x00000000000001f2       0x34 ./firmware/at32f403a_407_gpio.o
  .ARM.attributes
-                0x0000000000000226       0x34 ./firmware/at32f403a_407_gpio.o
+                0x0000000000000226       0x34 ./firmware/at32f403a_407_misc.o
  .ARM.attributes
-                0x000000000000025a       0x34 ./firmware/at32f403a_407_misc.o
+                0x000000000000025a       0x34 ./firmware/at32f403a_407_spi.o
  .ARM.attributes
-                0x000000000000028e       0x34 ./firmware/at32f403a_407_spi.o
+                0x000000000000028e       0x34 ./firmware/at32f403a_407_usart.o
  .ARM.attributes
-                0x00000000000002c2       0x34 ./firmware/at32f403a_407_usart.o
+                0x00000000000002c2       0x21 ./cmsis/startup_at32f403a_407.o
  .ARM.attributes
-                0x00000000000002f6       0x21 ./cmsis/startup_at32f403a_407.o
+                0x00000000000002e3       0x34 ./cmsis/system_at32f403a_407.o
  .ARM.attributes
-                0x0000000000000317       0x34 ./cmsis/system_at32f403a_407.o
+                0x0000000000000317       0x34 ./bsp/at32f403a_407_board.o
  .ARM.attributes
-                0x000000000000034b       0x34 ./bsp/at32f403a_407_board.o
+                0x000000000000034b       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-impure.o)
  .ARM.attributes
-                0x000000000000037f       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-impure.o)
+                0x000000000000037f       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-init.o)
  .ARM.attributes
-                0x00000000000003b3       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-init.o)
+                0x00000000000003b3       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-memset.o)
  .ARM.attributes
-                0x00000000000003e7       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-memset.o)
+                0x00000000000003e7       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-puts.o)
  .ARM.attributes
-                0x000000000000041b       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-puts.o)
+                0x000000000000041b       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-setvbuf.o)
  .ARM.attributes
-                0x000000000000044f       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-setvbuf.o)
+                0x000000000000044f       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-wbuf.o)
  .ARM.attributes
-                0x0000000000000483       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-wbuf.o)
+                0x0000000000000483       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-wsetup.o)
  .ARM.attributes
-                0x00000000000004b7       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-wsetup.o)
+                0x00000000000004b7       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-fflush.o)
  .ARM.attributes
-                0x00000000000004eb       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-fflush.o)
+                0x00000000000004eb       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-findfp.o)
  .ARM.attributes
-                0x000000000000051f       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-findfp.o)
+                0x000000000000051f       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-fwalk.o)
  .ARM.attributes
-                0x0000000000000553       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-fwalk.o)
+                0x0000000000000553       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-lock.o)
  .ARM.attributes
-                0x0000000000000587       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-lock.o)
+                0x0000000000000587       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-makebuf.o)
  .ARM.attributes
-                0x00000000000005bb       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-makebuf.o)
+                0x00000000000005bb       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-malloc.o)
  .ARM.attributes
-                0x00000000000005ef       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-malloc.o)
+                0x00000000000005ef       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-nano-freer.o)
  .ARM.attributes
-                0x0000000000000623       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-nano-freer.o)
+                0x0000000000000623       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-nano-mallocr.o)
  .ARM.attributes
-                0x0000000000000657       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-nano-mallocr.o)
+                0x0000000000000657       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-sbrkr.o)
  .ARM.attributes
-                0x000000000000068b       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-sbrkr.o)
+                0x000000000000068b       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-stdio.o)
  .ARM.attributes
-                0x00000000000006bf       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-stdio.o)
+                0x00000000000006bf       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-writer.o)
  .ARM.attributes
-                0x00000000000006f3       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-writer.o)
+                0x00000000000006f3       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-closer.o)
  .ARM.attributes
-                0x0000000000000727       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-closer.o)
+                0x0000000000000727       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-fstatr.o)
  .ARM.attributes
-                0x000000000000075b       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-fstatr.o)
+                0x000000000000075b       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-isattyr.o)
  .ARM.attributes
-                0x000000000000078f       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-isattyr.o)
+                0x000000000000078f       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-lseekr.o)
  .ARM.attributes
-                0x00000000000007c3       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-lseekr.o)
+                0x00000000000007c3       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-mlock.o)
  .ARM.attributes
-                0x00000000000007f7       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-mlock.o)
+                0x00000000000007f7       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-readr.o)
  .ARM.attributes
-                0x000000000000082b       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-readr.o)
+                0x000000000000082b       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-reent.o)
  .ARM.attributes
-                0x000000000000085f       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(lib_a-reent.o)
+                0x000000000000085f       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a(close.o)
  .ARM.attributes
-                0x0000000000000893       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a(close.o)
+                0x0000000000000893       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a(fstat.o)
  .ARM.attributes
-                0x00000000000008c7       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a(fstat.o)
+                0x00000000000008c7       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a(isatty.o)
  .ARM.attributes
-                0x00000000000008fb       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a(isatty.o)
+                0x00000000000008fb       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a(lseek.o)
  .ARM.attributes
-                0x000000000000092f       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a(lseek.o)
+                0x000000000000092f       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a(read.o)
  .ARM.attributes
-                0x0000000000000963       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a(read.o)
+                0x0000000000000963       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a(sbrk.o)
  .ARM.attributes
-                0x0000000000000997       0x34 /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a(sbrk.o)
- .ARM.attributes
-                0x00000000000009cb       0x1e /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtn.o
+                0x0000000000000997       0x1e /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtn.o
 OUTPUT(spi_test.elf elf32-littlearm)
 LOAD linker stubs
 LOAD /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a
 LOAD /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libm.a
 LOAD /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/libgcc.a
 
-.debug_info     0x0000000000000000    0x10f89
+.debug_info     0x0000000000000000    0x10e15
  .debug_info    0x0000000000000000     0x1a80 ./user/hardware/spi/at32_video_ev_spi.o
  .debug_info    0x0000000000001a80      0x430 ./user/hardware/lcd/at32_video_ev_font.o
  .debug_info    0x0000000000001eb0     0x2465 ./user/hardware/lcd/at32_video_ev_lcd.o
  .debug_info    0x0000000000004315      0x3cc ./user/at32f403a_407_clock.o
  .debug_info    0x00000000000046e1      0x10e ./user/at32f403a_407_int.o
- .debug_info    0x00000000000047ef      0x14d ./user/images.o
- .debug_info    0x000000000000493c     0x10d9 ./user/main.o
- .debug_info    0x0000000000005a15     0x2375 ./firmware/at32f403a_407_crm.o
- .debug_info    0x0000000000007d8a      0xe34 ./firmware/at32f403a_407_dma.o
- .debug_info    0x0000000000008bbe     0x1f20 ./firmware/at32f403a_407_gpio.o
- .debug_info    0x000000000000aade      0x9de ./firmware/at32f403a_407_misc.o
- .debug_info    0x000000000000b4bc     0x1228 ./firmware/at32f403a_407_spi.o
- .debug_info    0x000000000000c6e4     0x10a6 ./firmware/at32f403a_407_usart.o
- .debug_info    0x000000000000d78a       0x22 ./cmsis/startup_at32f403a_407.o
- .debug_info    0x000000000000d7ac     0x1596 ./cmsis/system_at32f403a_407.o
- .debug_info    0x000000000000ed42     0x2247 ./bsp/at32f403a_407_board.o
+ .debug_info    0x00000000000047ef     0x10b2 ./user/main.o
+ .debug_info    0x00000000000058a1     0x2375 ./firmware/at32f403a_407_crm.o
+ .debug_info    0x0000000000007c16      0xe34 ./firmware/at32f403a_407_dma.o
+ .debug_info    0x0000000000008a4a     0x1f20 ./firmware/at32f403a_407_gpio.o
+ .debug_info    0x000000000000a96a      0x9de ./firmware/at32f403a_407_misc.o
+ .debug_info    0x000000000000b348     0x1228 ./firmware/at32f403a_407_spi.o
+ .debug_info    0x000000000000c570     0x10a6 ./firmware/at32f403a_407_usart.o
+ .debug_info    0x000000000000d616       0x22 ./cmsis/startup_at32f403a_407.o
+ .debug_info    0x000000000000d638     0x1596 ./cmsis/system_at32f403a_407.o
+ .debug_info    0x000000000000ebce     0x2247 ./bsp/at32f403a_407_board.o
 
-.debug_abbrev   0x0000000000000000     0x1c2b
+.debug_abbrev   0x0000000000000000     0x1b98
  .debug_abbrev  0x0000000000000000      0x1d6 ./user/hardware/spi/at32_video_ev_spi.o
  .debug_abbrev  0x00000000000001d6      0x165 ./user/hardware/lcd/at32_video_ev_font.o
  .debug_abbrev  0x000000000000033b      0x30c ./user/hardware/lcd/at32_video_ev_lcd.o
  .debug_abbrev  0x0000000000000647       0x78 ./user/at32f403a_407_clock.o
  .debug_abbrev  0x00000000000006bf       0x44 ./user/at32f403a_407_int.o
- .debug_abbrev  0x0000000000000703       0x8a ./user/images.o
- .debug_abbrev  0x000000000000078d      0x236 ./user/main.o
- .debug_abbrev  0x00000000000009c3      0x229 ./firmware/at32f403a_407_crm.o
- .debug_abbrev  0x0000000000000bec      0x201 ./firmware/at32f403a_407_dma.o
- .debug_abbrev  0x0000000000000ded      0x215 ./firmware/at32f403a_407_gpio.o
- .debug_abbrev  0x0000000000001002      0x245 ./firmware/at32f403a_407_misc.o
- .debug_abbrev  0x0000000000001247      0x212 ./firmware/at32f403a_407_spi.o
- .debug_abbrev  0x0000000000001459      0x248 ./firmware/at32f403a_407_usart.o
- .debug_abbrev  0x00000000000016a1       0x12 ./cmsis/startup_at32f403a_407.o
- .debug_abbrev  0x00000000000016b3      0x187 ./cmsis/system_at32f403a_407.o
- .debug_abbrev  0x000000000000183a      0x3f1 ./bsp/at32f403a_407_board.o
+ .debug_abbrev  0x0000000000000703      0x22d ./user/main.o
+ .debug_abbrev  0x0000000000000930      0x229 ./firmware/at32f403a_407_crm.o
+ .debug_abbrev  0x0000000000000b59      0x201 ./firmware/at32f403a_407_dma.o
+ .debug_abbrev  0x0000000000000d5a      0x215 ./firmware/at32f403a_407_gpio.o
+ .debug_abbrev  0x0000000000000f6f      0x245 ./firmware/at32f403a_407_misc.o
+ .debug_abbrev  0x00000000000011b4      0x212 ./firmware/at32f403a_407_spi.o
+ .debug_abbrev  0x00000000000013c6      0x248 ./firmware/at32f403a_407_usart.o
+ .debug_abbrev  0x000000000000160e       0x12 ./cmsis/startup_at32f403a_407.o
+ .debug_abbrev  0x0000000000001620      0x187 ./cmsis/system_at32f403a_407.o
+ .debug_abbrev  0x00000000000017a7      0x3f1 ./bsp/at32f403a_407_board.o
 
-.debug_aranges  0x0000000000000000      0x7b8
+.debug_aranges  0x0000000000000000      0x7a0
  .debug_aranges
                 0x0000000000000000       0x38 ./user/hardware/spi/at32_video_ev_spi.o
  .debug_aranges
@@ -2380,27 +2383,25 @@ LOAD /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/.
  .debug_aranges
                 0x0000000000000170       0x60 ./user/at32f403a_407_int.o
  .debug_aranges
-                0x00000000000001d0       0x18 ./user/images.o
+                0x00000000000001d0       0x40 ./user/main.o
  .debug_aranges
-                0x00000000000001e8       0x40 ./user/main.o
+                0x0000000000000210      0x138 ./firmware/at32f403a_407_crm.o
  .debug_aranges
-                0x0000000000000228      0x138 ./firmware/at32f403a_407_crm.o
+                0x0000000000000348       0x68 ./firmware/at32f403a_407_dma.o
  .debug_aranges
-                0x0000000000000360       0x68 ./firmware/at32f403a_407_dma.o
+                0x00000000000003b0       0xa8 ./firmware/at32f403a_407_gpio.o
  .debug_aranges
-                0x00000000000003c8       0xa8 ./firmware/at32f403a_407_gpio.o
+                0x0000000000000458       0x88 ./firmware/at32f403a_407_misc.o
  .debug_aranges
-                0x0000000000000470       0x88 ./firmware/at32f403a_407_misc.o
+                0x00000000000004e0       0xd8 ./firmware/at32f403a_407_spi.o
  .debug_aranges
-                0x00000000000004f8       0xd8 ./firmware/at32f403a_407_spi.o
+                0x00000000000005b8      0x108 ./firmware/at32f403a_407_usart.o
  .debug_aranges
-                0x00000000000005d0      0x108 ./firmware/at32f403a_407_usart.o
+                0x00000000000006c0       0x28 ./cmsis/startup_at32f403a_407.o
  .debug_aranges
-                0x00000000000006d8       0x28 ./cmsis/startup_at32f403a_407.o
+                0x00000000000006e8       0x28 ./cmsis/system_at32f403a_407.o
  .debug_aranges
-                0x0000000000000700       0x28 ./cmsis/system_at32f403a_407.o
- .debug_aranges
-                0x0000000000000728       0x90 ./bsp/at32f403a_407_board.o
+                0x0000000000000710       0x90 ./bsp/at32f403a_407_board.o
 
 .debug_ranges   0x0000000000000000      0x6d0
  .debug_ranges  0x0000000000000000       0x28 ./user/hardware/spi/at32_video_ev_spi.o
@@ -2419,25 +2420,24 @@ LOAD /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/.
  .debug_ranges  0x0000000000000638       0x18 ./cmsis/system_at32f403a_407.o
  .debug_ranges  0x0000000000000650       0x80 ./bsp/at32f403a_407_board.o
 
-.debug_line     0x0000000000000000     0x48da
+.debug_line     0x0000000000000000     0x4771
  .debug_line    0x0000000000000000      0x362 ./user/hardware/spi/at32_video_ev_spi.o
  .debug_line    0x0000000000000362      0x255 ./user/hardware/lcd/at32_video_ev_font.o
- .debug_line    0x00000000000005b7      0xd5f ./user/hardware/lcd/at32_video_ev_lcd.o
- .debug_line    0x0000000000001316      0x1f7 ./user/at32f403a_407_clock.o
- .debug_line    0x000000000000150d       0xfc ./user/at32f403a_407_int.o
- .debug_line    0x0000000000001609      0x165 ./user/images.o
- .debug_line    0x000000000000176e      0x2e9 ./user/main.o
- .debug_line    0x0000000000001a57      0x93d ./firmware/at32f403a_407_crm.o
- .debug_line    0x0000000000002394      0x3cd ./firmware/at32f403a_407_dma.o
- .debug_line    0x0000000000002761      0x59b ./firmware/at32f403a_407_gpio.o
- .debug_line    0x0000000000002cfc      0x45b ./firmware/at32f403a_407_misc.o
- .debug_line    0x0000000000003157      0x71c ./firmware/at32f403a_407_spi.o
- .debug_line    0x0000000000003873      0x63a ./firmware/at32f403a_407_usart.o
- .debug_line    0x0000000000003ead       0x7c ./cmsis/startup_at32f403a_407.o
- .debug_line    0x0000000000003f29      0x353 ./cmsis/system_at32f403a_407.o
- .debug_line    0x000000000000427c      0x65e ./bsp/at32f403a_407_board.o
+ .debug_line    0x00000000000005b7      0xd69 ./user/hardware/lcd/at32_video_ev_lcd.o
+ .debug_line    0x0000000000001320      0x1f7 ./user/at32f403a_407_clock.o
+ .debug_line    0x0000000000001517       0xfc ./user/at32f403a_407_int.o
+ .debug_line    0x0000000000001613      0x2db ./user/main.o
+ .debug_line    0x00000000000018ee      0x93d ./firmware/at32f403a_407_crm.o
+ .debug_line    0x000000000000222b      0x3cd ./firmware/at32f403a_407_dma.o
+ .debug_line    0x00000000000025f8      0x59b ./firmware/at32f403a_407_gpio.o
+ .debug_line    0x0000000000002b93      0x45b ./firmware/at32f403a_407_misc.o
+ .debug_line    0x0000000000002fee      0x71c ./firmware/at32f403a_407_spi.o
+ .debug_line    0x000000000000370a      0x63a ./firmware/at32f403a_407_usart.o
+ .debug_line    0x0000000000003d44       0x7c ./cmsis/startup_at32f403a_407.o
+ .debug_line    0x0000000000003dc0      0x353 ./cmsis/system_at32f403a_407.o
+ .debug_line    0x0000000000004113      0x65e ./bsp/at32f403a_407_board.o
 
-.debug_str      0x0000000000000000     0x64fe
+.debug_str      0x0000000000000000     0x64e8
  .debug_str     0x0000000000000000      0xfd2 ./user/hardware/spi/at32_video_ev_spi.o
                                        0x1071 (size before relaxing)
  .debug_str     0x0000000000000fd2      0x171 ./user/hardware/lcd/at32_video_ev_font.o
@@ -2448,27 +2448,25 @@ LOAD /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/.
                                         0x7f8 (size before relaxing)
  .debug_str     0x0000000000001b35       0xac ./user/at32f403a_407_int.o
                                         0x1ed (size before relaxing)
- .debug_str     0x0000000000001be1       0x16 ./user/images.o
-                                        0x30c (size before relaxing)
- .debug_str     0x0000000000001bf7      0xab9 ./user/main.o
-                                       0x118b (size before relaxing)
- .debug_str     0x00000000000026b0     0x1466 ./firmware/at32f403a_407_crm.o
+ .debug_str     0x0000000000001be1      0xab9 ./user/main.o
+                                       0x1186 (size before relaxing)
+ .debug_str     0x000000000000269a     0x1466 ./firmware/at32f403a_407_crm.o
                                        0x2149 (size before relaxing)
- .debug_str     0x0000000000003b16      0x9f1 ./firmware/at32f403a_407_dma.o
+ .debug_str     0x0000000000003b00      0x9f1 ./firmware/at32f403a_407_dma.o
                                         0xec9 (size before relaxing)
- .debug_str     0x0000000000004507      0x894 ./firmware/at32f403a_407_gpio.o
+ .debug_str     0x00000000000044f1      0x894 ./firmware/at32f403a_407_gpio.o
                                        0x1399 (size before relaxing)
- .debug_str     0x0000000000004d9b      0x3ba ./firmware/at32f403a_407_misc.o
+ .debug_str     0x0000000000004d85      0x3ba ./firmware/at32f403a_407_misc.o
                                         0xad4 (size before relaxing)
- .debug_str     0x0000000000005155      0x6e4 ./firmware/at32f403a_407_spi.o
+ .debug_str     0x000000000000513f      0x6e4 ./firmware/at32f403a_407_spi.o
                                        0x11dc (size before relaxing)
- .debug_str     0x0000000000005839      0x735 ./firmware/at32f403a_407_usart.o
+ .debug_str     0x0000000000005823      0x735 ./firmware/at32f403a_407_usart.o
                                         0xde9 (size before relaxing)
- .debug_str     0x0000000000005f6e       0x2f ./cmsis/startup_at32f403a_407.o
+ .debug_str     0x0000000000005f58       0x2f ./cmsis/startup_at32f403a_407.o
                                          0x58 (size before relaxing)
- .debug_str     0x0000000000005f9d       0x68 ./cmsis/system_at32f403a_407.o
+ .debug_str     0x0000000000005f87       0x68 ./cmsis/system_at32f403a_407.o
                                         0xaf1 (size before relaxing)
- .debug_str     0x0000000000006005      0x4f9 ./bsp/at32f403a_407_board.o
+ .debug_str     0x0000000000005fef      0x4f9 ./bsp/at32f403a_407_board.o
                                        0x1425 (size before relaxing)
 
 .comment        0x0000000000000000       0x49
@@ -2478,7 +2476,6 @@ LOAD /home/alexandro/AT32IDE/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/.
  .comment       0x0000000000000049       0x4a ./user/hardware/lcd/at32_video_ev_lcd.o
  .comment       0x0000000000000049       0x4a ./user/at32f403a_407_clock.o
  .comment       0x0000000000000049       0x4a ./user/at32f403a_407_int.o
- .comment       0x0000000000000049       0x4a ./user/images.o
  .comment       0x0000000000000049       0x4a ./user/main.o
  .comment       0x0000000000000049       0x4a ./firmware/at32f403a_407_crm.o
  .comment       0x0000000000000049       0x4a ./firmware/at32f403a_407_dma.o

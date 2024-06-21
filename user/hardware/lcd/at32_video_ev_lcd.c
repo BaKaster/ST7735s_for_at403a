@@ -683,19 +683,20 @@ void st7735s_initial(void)
   lcd_wr_data(0x00);
   lcd_wr_data(0x00);
   lcd_wr_reg(0xC0);  //power control
-  lcd_wr_data(0x1D); //vrh[5:0]
+  lcd_wr_data(0xA2); //vrh[5:0]
   lcd_wr_reg(0xC1);  //power control
-  lcd_wr_data(0x12); //sap[2:0];bt[3:0]
+  lcd_wr_data(0xC5); //sap[2:0];bt[3:0]
   lcd_wr_reg(0xC5);  //vcm control
   lcd_wr_data(0x0E);
-  lcd_wr_data(0x11);
-  lcd_wr_reg(0xC7);  //vcm control
-  lcd_wr_data(0x10);
+//  lcd_wr_data(0x11);
+//  lcd_wr_reg(0xC7);  //vcm control
+//  lcd_wr_data(0x10);
   lcd_wr_reg(0x3A);  //memory access control
   lcd_wr_data(0x05);
   lcd_wr_reg(0xB1);
-  lcd_wr_data(0x00);
-  lcd_wr_data(0x12);
+  lcd_wr_data(0x01); // RTNA[3:0] - Set 1-line period
+    lcd_wr_data(0x2C); // FPA[5:0] - Front Porch
+    lcd_wr_data(0x2D); // BPA[5:0] - Back Porch
   lcd_wr_reg(0xB6);  //display function control
   lcd_wr_data(0x0A);
   lcd_wr_data(0xA2);
@@ -708,43 +709,39 @@ void st7735s_initial(void)
 //  lcd_wr_reg(0x26);  //gamma curve selected
 //  lcd_wr_data(0x01);
   lcd_wr_reg(0xE0);  //set gamma
-  lcd_wr_data(0x00); // -2
-  lcd_wr_data(0x00); // -2
-  lcd_wr_data(0x00); // -2
-  lcd_wr_data(0x00); // -2
-
-  lcd_wr_data(0x00);  // -4
-  lcd_wr_data(0x00);  // -4
-  lcd_wr_data(0x00);  // -4
-  lcd_wr_data(0x00);  // -4
-  lcd_wr_data(0x00);  // -4
-  lcd_wr_data(0x00);  // -4
-  lcd_wr_data(0x00);  // -4
-
-  lcd_wr_data(0x00);
-  lcd_wr_data(0x00);
-  lcd_wr_data(0x00);
-  lcd_wr_data(0x00);
-  lcd_wr_data(0x00);
+  lcd_wr_data(0x02);
+   lcd_wr_data(0x1c);
+   lcd_wr_data(0x07);
+   lcd_wr_data(0x12);
+   lcd_wr_data(0x37);
+   lcd_wr_data(0x32);
+   lcd_wr_data(0x29);
+   lcd_wr_data(0x2d);
+   lcd_wr_data(0x29);
+   lcd_wr_data(0x25);
+   lcd_wr_data(0x2B);
+   lcd_wr_data(0x39);
+   lcd_wr_data(0x00);
+   lcd_wr_data(0x01);
+   lcd_wr_data(0x03);
+   lcd_wr_data(0x10);
   lcd_wr_reg(0xE1);  //set gamma
-  lcd_wr_data(0x00); // -2
-  lcd_wr_data(0x00); // -2
-  lcd_wr_data(0x00); // -2
-  lcd_wr_data(0x00); // -2
-
-  lcd_wr_data(0x00);  // +4
-  lcd_wr_data(0x00);  // +4
-  lcd_wr_data(0x00);  // +4
-  lcd_wr_data(0x00);  // +4
-  lcd_wr_data(0x00);  // +4
-  lcd_wr_data(0x00);
-  lcd_wr_data(0x00);
-
-  lcd_wr_data(0x00);
-  lcd_wr_data(0x00);
-  lcd_wr_data(0x00);
-  lcd_wr_data(0x00);
-  lcd_wr_data(0x00);
+  lcd_wr_data(0x03);
+   lcd_wr_data(0x1d);
+   lcd_wr_data(0x07);
+   lcd_wr_data(0x06);
+   lcd_wr_data(0x2E);
+   lcd_wr_data(0x2C);
+   lcd_wr_data(0x29);
+   lcd_wr_data(0x2D);
+   lcd_wr_data(0x2E);
+   lcd_wr_data(0x2E);
+   lcd_wr_data(0x37);
+   lcd_wr_data(0x3F);
+   lcd_wr_data(0x00);
+   lcd_wr_data(0x00);
+   lcd_wr_data(0x02);
+   lcd_wr_data(0x10);
   lcd_wr_reg(0x29);  //display on
 }
 

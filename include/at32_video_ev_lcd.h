@@ -79,6 +79,7 @@ extern uint16_t back_color;
 #define STATUS_BAR 	0x18E3
 #define GEOSCAN_COLOR 	0xC201
 #define BRIGHTED_SELECT 0X52AA
+#define BACKGROUND 0x1082
 
 int16_t getFontDataIndex(wchar_t ch, const CharIndex* charIndexArray);
 uint16_t blend_colors(uint16_t fg, uint16_t bg, uint8_t alpha);
