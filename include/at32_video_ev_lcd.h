@@ -55,16 +55,6 @@ extern lcd_dev_struct lcddev;
 extern uint16_t point_color;
 extern uint16_t back_color;
 
-/* scan direction, 0: 0, 1: 90, 2: 180, 3: 270 */
-#define L2R_U2D                          0 //left to right, up to down
-#define L2R_D2U                          1 //left to right, down to up
-#define R2L_U2D                          2 //right to left, up to down
-#define R2L_D2U                          3 //right to left, down to up
-                            
-#define U2D_L2R                          4 //up to down, left to right
-#define U2D_R2L                          5 //up to down, right to left
-#define D2U_L2R                          6 //down to up, left to right
-#define D2U_R2L                          7 //down to up, right to left
 
 #define DFT_SCAN_DIR                     L2R_U2D
 
@@ -90,26 +80,15 @@ extern uint16_t back_color;
 #define GEOSCAN_COLOR 	0xC201
 #define BRIGHTED_SELECT 0X52AA
 
-#define DARKBLUE      	                  0x01CF
-#define LIGHTBLUE      	                 0x7D7C
-#define GRAYBLUE       	                 0x5458
-
-#define LIGHTGREEN     	                 0x841F
-#define LIGHTGRAY                        0xEF5B
-#define LGRAY 			                        0xC618
-
-#define LGRAYBLUE                        0xA651
-#define LBBLUE                           0x2B12
-
 int16_t getFontDataIndex(wchar_t ch, const CharIndex* charIndexArray);
 uint16_t blend_colors(uint16_t fg, uint16_t bg, uint8_t alpha);
+void st7735s_DrawBitmap(uint8_t *bitmap, int x, int y, int w, int h);
 void lcd_draw_round_rect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t r, uint16_t color);
+void lcd_display_buffer(void);
 void lcd_wr_reg(uint8_t regval);
 void lcd_wr_data(uint8_t data);
-bool isPointInCircle(int x, int y, int cx, int cy, int r);
 void lcd_wr_data16(uint16_t data);
 void lcd_draw_point(uint16_t x, uint16_t y, uint16_t color);
-void lcd_draw_big_point(uint16_t x, uint16_t y, uint16_t color);
 void lcd_draw_line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
 void lcd_draw_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
 void lcd_draw_circle(uint16_t x0, uint16_t y0, uint8_t r, uint16_t color);
@@ -122,10 +101,8 @@ void lcd_scan_dir(uint8_t dir);
 void st7735s_initial(void);
 void lcd_init(void);
 void lcd_clear(uint16_t color);
-void lcd_fill(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint16_t *color);
+void lcd_fill(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint16_t color);
 uint32_t lcd_pow(uint8_t m, uint8_t n);
-void lcd_show_num(uint16_t x, uint16_t y, uint32_t num, uint8_t len, uint8_t size);
-void lcd_show_xnum(uint16_t x, uint16_t y, uint32_t num, uint8_t len, uint8_t size, uint8_t mode);
 uint16_t lcd_bgr2rgb(uint16_t c);
 
 #endif

@@ -2,7 +2,7 @@
 #include "at32f403a_407_board.h"
 #include "at32_video_ev_lcd.h"
 #include "at32_video_ev_spi.h"
-
+#include "images.h"
 #include "time.h"
 #include "stdlib.h"
 #include "string.h"
@@ -25,23 +25,24 @@ void lcd_display_initial_info(void)
 //    back_color = RED;
 //    lcd_draw_rectangle(20,20, 64,64, WHITE);
     //lcd_draw_filled_rectangle(40, 40, 20, 30, WHITE);
-   lcd_draw_filled_rounded_rectangle_with_inner_border(0, 0, 128, 21, 5, STATUS_BAR, RED, 0);
-    lcd_draw_filled_rounded_rectangle_with_inner_border(3, 25, 121, 23, 4, BRIGHTED_SELECT, WHITE, 1);
-    lcd_draw_filled_rounded_rectangle_with_inner_border(3, 52, 121, 23, 4, BUTTONS, BLACK, 0);
-    lcd_draw_filled_rounded_rectangle_with_inner_border(3, 79, 121, 23, 4, BUTTONS, WHITE, 0);
-    lcd_draw_filled_rounded_rectangle_with_inner_border(3, 106, 121, 23, 4, BUTTONS, WHITE, 0);
-    lcd_draw_filled_rounded_rectangle_with_inner_border(3, 133, 121, 23, 4, BUTTONS, WHITE, 0);
+	lcd_draw_filled_round_rect(0, 0, 128, 21, 5, STATUS_BAR);
+	lcd_draw_filled_round_rect(3, 25, 121, 23, 7, BRIGHTED_SELECT);
+	lcd_draw_filled_round_rect(3, 52, 121, 23, 7, BUTTONS);
+	lcd_draw_filled_round_rect(3, 79, 121, 23, 7, BUTTONS);
+	lcd_draw_filled_round_rect(3, 106, 121, 23, 7, BUTTONS);
+	lcd_draw_filled_round_rect(3, 133, 121, 23, 7, BUTTONS);
 //    lcd_draw_circle_helper(50, 50, 30, QUADRANT_1, RED);
 //    lcd_draw_circle_helper(50, 50, 30, QUADRANT_2, BLUE);
 //    lcd_draw_circle_helper(50, 50, 30, QUADRANT_3, YELLOW);
 //    lcd_draw_circle_helper(50, 50, 30, QUADRANT_4, GREEN);
-    lcd_draw_filled_round_rect(3, 106, 121, 23, 7, WHITE);
+    lcd_draw_round_rect(3, 25, 121, 23, 7, WHITE);
    lcd_show_string(88,11,120,100,&Montserrat_12, L"100%", WHITE);
     lcd_show_string(28,38,120,100,&Montserrat_16, L"Сведения", WHITE);
     lcd_show_string(28,65,120,100,&Montserrat_16, L"Режим сна", WHITE);
     lcd_show_string(28,92,120,100,&Montserrat_16,L"Настройки", WHITE);
     lcd_show_string(28,119,120,100,&Montserrat_16, L"Геоскан", WHITE);
     lcd_show_string(28,146,120,100,&Montserrat_16, L"Функция", WHITE);
+    st7735s_DrawBitmap(city, 0, 0, 128, 160);
 	lcd_display_buffer();
 }
 
