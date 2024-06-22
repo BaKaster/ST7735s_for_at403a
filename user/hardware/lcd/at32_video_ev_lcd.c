@@ -5,6 +5,8 @@
 #include "math.h"
 #include "at32_video_ev_lcd.h"
 #include "at32_video_ev_spi.h"
+#include "math.h"
+#include "images.h"
 
 /******************************************************************************/
 /* point color and background color */
@@ -115,34 +117,50 @@ void lcd_draw_point(uint16_t x, uint16_t y, uint16_t color) {
   }
 }
 
-void st7735s_DrawBitmap(uint8_t *bitmap, int x, int y, int w, int h) {
+void st7735s_DrawBitmap(Image *img, int x, int y) {
   int i, j;
 
-    // Проверяем выход за границы экрана
-    if (x < 0 || y < 0 || x + w > LCD_WIDTH || y + h > LCD_HEIGHT) {
-      return;
+  if (x < 0 || y < 0 || x + img->w > LCD_WIDTH || y + img->h > LCD_HEIGHT) {
+    return;
+  }
+
+  for (i = 0; i < img->h; i++) {
+    for (j = 0; j < img->w; j++) {
+      uint8_t byte1 = img->data[i * img->w * 2 + j * 2];
+      uint8_t byte2 = img->data[i * img->w * 2 + j * 2 + 1];
+
+      uint8_t r = (byte2 >> 3) & 0x1F;
+      uint8_t g = ((byte2 & 0x07) << 3) | (byte1 >> 5);
+      uint8_t b = byte1 & 0x3F;
+
+      // Собираем данные в 16-битный формат RGB565
+      uint16_t color = (r << 11) | (g << 5) | b;
+
+      // Записываем данные в буфер LCD
+      lcd_draw_point(x + j, y + i, color);
     }
-    // Итерируемся по каждой строке
-    for (i = 0; i < h; i++) {
-      // Итерируемся по каждому пикселю в строке
-      for (j = 0; j < w; j++) {
-        // Извлекаем данные пикселя из двух байтов
-        uint8_t byte1 = bitmap[i * w * 2 + j * 2];
-        uint8_t byte2 = bitmap[i * w * 2 + j * 2 + 1];
-
-        uint8_t r = (byte2 >> 3) & 0x1F;
-        // Исправленное преобразование зелёного канала
-        uint8_t g = ((byte2 & 0x07) << 3) | (byte1 >> 5);
-        uint8_t b = byte1 & 0x3F;
-
-        // Собираем данные в 16-битный формат RGB565
-        uint16_t color = (r << 11) | (g << 5) | b;
-
-        // Записываем данные в буфер LCD
-        lcd_draw_point(x + j, y + i,  color);    }
-    }
+  }
 }
 
+void draw_transparent_png(Image *img, int x, int y) {
+    for (int i = 0; i < img->h; i++) {
+        for (int j = 0; j < img->w; j++) {
+            // Индекс текущего пикселя в массиве data
+            int index = (i * img->w + j) * 2;
+
+            // Получаем цвет пикселя (RGB565)
+            uint16_t color = ((uint16_t*)img->data)[index];
+
+            // Получаем значение альфа-канала
+            uint8_t alpha = img->data[index + 1];
+
+            // Рисуем пиксель, только если он достаточно непрозрачный
+            if (alpha > 128) {
+                lcd_draw_point(x + j, y + i, color);
+            }
+        }
+    }
+}
 
 
 /**
@@ -544,16 +562,6 @@ void lcd_show_char(uint16_t x, uint16_t y, uint8_t ch, const uint8_t glyph_bitma
         }
     }
 }
-
-// Функция для блендинга двух цветов с заданной прозрачностью (alpha)
-inline uint16_t blend_colors(uint16_t fg, uint16_t bg, uint8_t alpha) {
-    // Улучшенное извлечение и комбинирование цветовых компонент
-    uint8_t r = (((fg >> 11) * alpha) + ((bg >> 11) * (255 - alpha))) >> 8;
-    uint8_t g = ((((fg >> 5) & 0x3F) * alpha) + (((bg >> 5) & 0x3F) * (255 - alpha))) >> 8;
-    uint8_t b = (((fg & 0x1F) * alpha) + ((bg & 0x1F) * (255 - alpha))) >> 8;
-    return (r << 11) | (g << 5) | b;
-}
-
 /**
   * @brief  write lcd block
   * @param  xstart: x direction start
@@ -615,7 +623,7 @@ void lcd_scan_dir(uint8_t dir)
       lcddev.setycmd = 0x2B;
       lcddev.wramcmd = 0x2C;
       lcd_wr_reg(0x36);
-      lcd_wr_data(0x00);
+      lcd_wr_data(0x08);
       break;
     case 1:
       lcddev.width = 160;
@@ -624,16 +632,16 @@ void lcd_scan_dir(uint8_t dir)
       lcddev.setycmd = 0x2B;
       lcddev.wramcmd = 0x2C;
       lcd_wr_reg(0x36);
-      lcd_wr_data(0xA0);
+      lcd_wr_data(0xA8);
       break;
     case 2:
-      lcddev.width = 128;
-      lcddev.height = 160;
+      lcddev.width = 240;
+      lcddev.height = 240;
       lcddev.setxcmd = 0x2A;
       lcddev.setycmd = 0x2B;
       lcddev.wramcmd = 0x2C;
       lcd_wr_reg(0x36);
-      lcd_wr_data(0xC0);
+      lcd_wr_data(0xC8);
       break;
     case 3:
       lcddev.width = 160;
@@ -642,7 +650,7 @@ void lcd_scan_dir(uint8_t dir)
       lcddev.setycmd = 0x2B;
       lcddev.wramcmd = 0x2C;
       lcd_wr_reg(0x36);
-      lcd_wr_data(0x60);
+      lcd_wr_data(0x68);
       break;
     default:
       break;

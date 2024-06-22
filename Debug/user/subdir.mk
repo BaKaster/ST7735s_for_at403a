@@ -7,18 +7,21 @@ C_SRCS += \
 ../user/at32f403a_407_clock.c \
 ../user/at32f403a_407_int.c \
 ../user/images.c \
+../user/lodepng.c \
 ../user/main.c 
 
 OBJS += \
 ./user/at32f403a_407_clock.o \
 ./user/at32f403a_407_int.o \
 ./user/images.o \
+./user/lodepng.o \
 ./user/main.o 
 
 C_DEPS += \
 ./user/at32f403a_407_clock.d \
 ./user/at32f403a_407_int.d \
 ./user/images.d \
+./user/lodepng.d \
 ./user/main.d 
 
 

@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 #define LCD_WIDTH            	           128
-#define LCD_HEIGHT           	           160
+#define LCD_HEIGHT           	           128
 
 #define TOUCH_POINT_SIZE           	     3
 
@@ -83,7 +83,6 @@ extern uint16_t back_color;
 
 int16_t getFontDataIndex(wchar_t ch, const CharIndex* charIndexArray);
 uint16_t blend_colors(uint16_t fg, uint16_t bg, uint8_t alpha);
-void st7735s_DrawBitmap(uint8_t *bitmap, int x, int y, int w, int h);
 void lcd_draw_round_rect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t r, uint16_t color);
 void lcd_display_buffer(void);
 void lcd_wr_reg(uint8_t regval);

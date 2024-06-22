@@ -6,6 +6,7 @@
 #include "time.h"
 #include "stdlib.h"
 #include "string.h"
+#include "/usr/include/png.h"
 
 
 #define    EXTEND_SRAM          0x00
@@ -19,50 +20,54 @@ void nvic_configuration(void);
   * @retval none
   */
 
+
 void lcd_display_initial_info(void)
 {
+
+
 //    point_color = WHITE;
 //    back_color = RED;
 //    lcd_draw_rectangle(20,20, 64,64, WHITE);
     //lcd_draw_filled_rectangle(40, 40, 20, 30, WHITE);
-	lcd_clear(BACKGROUND);
-	lcd_draw_filled_round_rect(0, 0, 128, 21, 5, STATUS_BAR);
-	lcd_draw_filled_round_rect(3, 25, 121, 23, 7, BRIGHTED_SELECT);
-	lcd_draw_filled_round_rect(3, 52, 121, 23, 7, BUTTONS);
-	lcd_draw_filled_round_rect(3, 79, 121, 23, 7, BUTTONS);
-	lcd_draw_filled_round_rect(3, 106, 121, 23, 7, BUTTONS);
-	lcd_draw_filled_round_rect(3, 133, 121, 23, 7, BUTTONS);
-//    lcd_draw_circle_helper(50, 50, 30, QUADRANT_1, RED);
-//    lcd_draw_circle_helper(50, 50, 30, QUADRANT_2, BLUE);
-//    lcd_draw_circle_helper(50, 50, 30, QUADRANT_3, YELLOW);
-//    lcd_draw_circle_helper(50, 50, 30, QUADRANT_4, GREEN);
-    lcd_draw_round_rect(3, 25, 121, 23, 7, WHITE);
-   lcd_show_string(88,11,120,100,&Montserrat_12, L"100%", WHITE);
-    lcd_show_string(28,38,120,100,&Montserrat_16, L"Сведения", WHITE);
-    lcd_show_string(28,65,120,100,&Montserrat_16, L"Режим сна", WHITE);
-    lcd_show_string(28,92,120,100,&Montserrat_16,L"Настройки", WHITE);
-    lcd_show_string(28,119,120,100,&Montserrat_16, L"Геоскан", WHITE);
-    lcd_show_string(28,146,120,100,&Montserrat_16, L"Функция", WHITE);
-   // st7735s_DrawBitmap(city, 0, 0, 128, 160);
+//	lcd_clear(BACKGROUND);
+//	lcd_draw_filled_round_rect(0, 0, 128, 21, 5, STATUS_BAR);
+//	lcd_draw_filled_round_rect(3, 25, 121, 23, 7, BRIGHTED_SELECT);
+//	lcd_draw_filled_round_rect(3, 52, 121, 23, 7, BUTTONS);
+//	lcd_draw_filled_round_rect(3, 79, 121, 23, 7, BUTTONS);
+//	lcd_draw_filled_round_rect(3, 106, 121, 23, 7, BUTTONS);
+//	lcd_draw_filled_round_rect(3, 133, 121, 23, 7, BUTTONS);
+////    lcd_draw_circle_helper(50, 50, 30, QUADRANT_1, RED);
+////    lcd_draw_circle_helper(50, 50, 30, QUADRANT_2, BLUE);
+////    lcd_draw_circle_helper(50, 50, 30, QUADRANT_3, YELLOW);
+////    lcd_draw_circle_helper(50, 50, 30, QUADRANT_4, GREEN);
+//    lcd_draw_round_rect(3, 25, 121, 23, 7, WHITE);
+//   lcd_show_string(88,11,120,100,&Montserrat_12, L"100%", WHITE);
+//    lcd_show_string(28,38,120,100,&Montserrat_16, L"Сведения", WHITE);
+//    lcd_show_string(28,65,120,100,&Montserrat_16, L"Режим сна", WHITE);
+//    lcd_show_string(28,92,120,100,&Montserrat_16,L"Настройки", WHITE);
+//    lcd_show_string(28,119,120,100,&Montserrat_16, L"Геоскан", WHITE);
+//    lcd_show_string(28,146,120,100,&Montserrat_16, L"Функция", WHITE);
+	st7735s_DrawBitmap(&background, 0, 0);
+	draw_transparent_png(&logo, 20, 20);
 	lcd_display_buffer();
 }
 
 
 void extend_sram(void)
 {
-  /* check if ram has been set to expectant size, if not, change eopb0 to 64k sram */
-  if(((USD->eopb0) & 0xFF) != EXTEND_SRAM)
-  {
-    flash_unlock();
-    /* erase user system data bytes */
-    flash_user_system_data_erase();
-
-    /* change sram size */
-    flash_user_system_data_program((uint32_t)&USD->eopb0, EXTEND_SRAM);
-
-    /* system reset */
-    nvic_system_reset();
-  }
+//  /* check if ram has been set to expectant size, if not, change eopb0 to 64k sram */
+//  if(((USD->eopb0) & 0xFF) != EXTEND_SRAM)
+//  {
+//    flash_unlock();
+//    /* erase user system data bytes */
+//    flash_user_system_data_erase();
+//
+//    /* change sram size */
+//    flash_user_system_data_program((uint32_t)&USD->eopb0, EXTEND_SRAM);
+//
+//    /* system reset */
+//    nvic_system_reset();
+//  }
 }
 
 
@@ -74,6 +79,7 @@ void extend_sram(void)
 
 int main(void)
 {
+
   system_clock_config();
   nvic_configuration();
   delay_init();
@@ -86,7 +92,7 @@ int main(void)
   lcd_init();
 
 
-  //lcd_clear(0x0841);
+  lcd_clear(BLACK);
   while(1)
   {
 	  lcd_display_initial_info();
