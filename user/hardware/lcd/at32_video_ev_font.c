@@ -4,12 +4,14 @@ const size_t CHAR_INDEX_ARRAY_SIZE = 161;
 
 const font_t Montserrat_16 = {
     .glyph_bitmap = Montserrat_16_bitmap,
-    .glyph_dsc = Montserrat_16_glf // Предполагаем, что у вас есть массив описаний для Montserrat_16
+    .glyph_dsc = Montserrat_16_glf,// Предполагаем, что у вас есть массив описаний для Montserrat_16
+	.size = 16
 };
 
 const font_t Montserrat_12 = {
     .glyph_bitmap = Montserrat_12_bitmap,
-    .glyph_dsc = Montserrat_12_glf // Предполагаем, что у вас есть массив описаний для Montserrat_12
+    .glyph_dsc = Montserrat_12_glf, // Предполагаем, что у вас есть массив описаний для Montserrat_12
+	.size = 12
 };
 
 
@@ -2942,7 +2944,7 @@ const uint8_t Montserrat_12_bitmap[] = {
 		    {.bitmap_index = 555, .adv_w = 115, .box_w = 7, .box_h = 9, .ofs_x = 0, .ofs_y = 0},
 		    {.bitmap_index = 587, .adv_w = 124, .box_w = 8, .box_h = 9, .ofs_x = 0, .ofs_y = 0},
 		    {.bitmap_index = 623, .adv_w = 118, .box_w = 7, .box_h = 9, .ofs_x = 0, .ofs_y = 0},
-		    {.bitmap_index = 655, .adv_w = 44, .box_w = 3, .box_h = 7, .ofs_x = 0, .ofs_y = 0},
+		    {.bitmap_index = 655, .adv_w = 74, .box_w = 3, .box_h = 7, .ofs_x = 1, .ofs_y = 0},
 		    {.bitmap_index = 666, .adv_w = 44, .box_w = 3, .box_h = 9, .ofs_x = 0, .ofs_y = -2},
 		    {.bitmap_index = 680, .adv_w = 112, .box_w = 7, .box_h = 7, .ofs_x = 0, .ofs_y = 1},
 		    {.bitmap_index = 705, .adv_w = 112, .box_w = 7, .box_h = 5, .ofs_x = 0, .ofs_y = 2},

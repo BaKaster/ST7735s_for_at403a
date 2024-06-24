@@ -1,5 +1,5 @@
-user/images.o: ../user/images.c ../include/at32_video_ev_lcd.h \
- ../include/at32f403a_407_board.h \
+user/menu_functions.o: ../user/menu_functions.c \
+ ../include/menu_functions.h ../include/at32f403a_407_board.h \
  ../include/libraries/cmsis/cm4/device_support/at32f403a_407.h \
  ../include/libraries/cmsis/cm4/core_support/core_cm4.h \
  ../include/libraries/cmsis/cm4/core_support/cmsis_version.h \
@@ -34,8 +34,11 @@ user/images.o: ../user/images.c ../include/at32_video_ev_lcd.h \
  ../include/libraries/drivers/inc/at32f403a_407_misc.h \
  ../include/libraries/drivers/inc/at32f403a_407_usb.h \
  ../include/libraries/drivers/inc/at32f403a_407_emac.h \
- ../include/images.h ../include/at32_video_ev_lcd.h
-../include/at32_video_ev_lcd.h:
+ ../include/ssd1306_menu.h ../include/at32f403a_407_int.h \
+ ../include/images.h ../include/at32_video_ev_lcd.h \
+ ../include/encoder_navigation.h ../include/menu_functions.h \
+ ../include/images.h ../include/at32f403a_407_int.h
+../include/menu_functions.h:
 ../include/at32f403a_407_board.h:
 ../include/libraries/cmsis/cm4/device_support/at32f403a_407.h:
 ../include/libraries/cmsis/cm4/core_support/core_cm4.h:
@@ -71,5 +74,11 @@ user/images.o: ../user/images.c ../include/at32_video_ev_lcd.h \
 ../include/libraries/drivers/inc/at32f403a_407_misc.h:
 ../include/libraries/drivers/inc/at32f403a_407_usb.h:
 ../include/libraries/drivers/inc/at32f403a_407_emac.h:
+../include/ssd1306_menu.h:
+../include/at32f403a_407_int.h:
 ../include/images.h:
 ../include/at32_video_ev_lcd.h:
+../include/encoder_navigation.h:
+../include/menu_functions.h:
+../include/images.h:
+../include/at32f403a_407_int.h:

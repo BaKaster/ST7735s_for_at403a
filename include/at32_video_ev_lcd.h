@@ -6,7 +6,8 @@
 #define LCD_WIDTH            	           128
 #define LCD_HEIGHT           	           160
 
-#define TOUCH_POINT_SIZE           	     3
+extern const int lcd_width;
+extern const int lcd_height;
 
 typedef struct
 {
@@ -37,7 +38,14 @@ typedef struct {
 typedef struct {
     const uint8_t *glyph_bitmap; // Указатель на растровые данные шрифта
     const font_info *glyph_dsc;  // Указатель на массив описаний глифов
+    uint8_t size;
 } font_t;
+
+typedef struct {
+  const uint8_t *data;
+  int w;
+  int h;
+} Image;
 
 extern const uint8_t Montserrat_16_bitmap[];
 extern const uint8_t Montserrat_12_bitmap[];
@@ -61,29 +69,26 @@ extern uint16_t back_color;
 /* color value */
 #define WHITE         	                  0xFFFF
 #define BLACK         	                  0x0000
-#define BLUE         	                   0x001F
-#define BRED                             0xF81F
-#define GRED 			                         0xFFE0
-#define GBLUE			                         0x07FF
+#define BLUE         	                  0x001F
 #define RED           	                  0xF800
-#define TOUCH_RED      	                 0x00F8
-#define MAGENTA       	                  0xF81F
 #define GREEN         	                  0x07E0
 #define CYAN          	                  0x7FFF
 #define YELLOW        	                  0xFFE0
-#define BROWN 			                        0xBC40
-#define BRRED 		\	                        0xFC07
-#define GRAY  			                        0x8430
-#define DARKGRAYISH 0x001F
-#define BUTTONS 	0x3186
-#define STATUS_BAR 	0x18E3
-#define GEOSCAN_COLOR 	0xC201
-#define BRIGHTED_SELECT 0X52AA
-#define BACKGROUND 0x1082
+#define BROWN 			                  0xBC40
+#define GRAY  			                  0x8430
 
+#define BUTTONS 	                      0x3186
+#define STATUS_BAR 	                      0x18E3
+#define GEOSCAN_COLOR 	                  0xC201
+#define BRIGHTED_SELECT                   0X52AA
+#define BACKGROUND                        0x1082
+extern volatile bool dma_transfer_complete;
+uint8_t calculate_alpha(int16_t x, int16_t y, uint16_t r);
+
+void draw_transparent_png(const Image *img, int x, int y);
 int16_t getFontDataIndex(wchar_t ch, const CharIndex* charIndexArray);
 uint16_t blend_colors(uint16_t fg, uint16_t bg, uint8_t alpha);
-void st7735s_DrawBitmap(uint8_t *bitmap, int x, int y, int w, int h);
+void st7735s_DrawBitmap(Image *img, int x, int y);
 void lcd_draw_round_rect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t r, uint16_t color);
 void lcd_display_buffer(void);
 void lcd_wr_reg(uint8_t regval);
@@ -92,6 +97,7 @@ void lcd_wr_data16(uint16_t data);
 void lcd_draw_point(uint16_t x, uint16_t y, uint16_t color);
 void lcd_draw_line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
 void lcd_draw_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
+void lcd_draw_filled_round_rect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t r, uint16_t color);
 void lcd_draw_circle(uint16_t x0, uint16_t y0, uint8_t r, uint16_t color);
 void lcd_draw_circle_helper(uint16_t x0, uint16_t y0, uint16_t r, uint8_t cornername, uint16_t color);
 void lcd_show_string(uint16_t x, uint16_t y, uint16_t width, uint16_t height, const font_t *font, wchar_t *p, const uint16_t base_color);

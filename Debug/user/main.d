@@ -35,7 +35,12 @@ user/main.o: ../user/main.c ../include/at32f403a_407_clock.h \
  ../include/libraries/drivers/inc/at32f403a_407_emac.h \
  ../include/at32f403a_407_board.h ../include/at32_video_ev_lcd.h \
  ../include/at32f403a_407_board.h ../include/at32_video_ev_spi.h \
- ../include/images.h ../include/at32_video_ev_lcd.h
+ ../include/images.h ../include/at32_video_ev_lcd.h \
+ ../include/encoder_navigation.h ../include/ssd1306_menu.h \
+ ../include/at32f403a_407_int.h ../include/images.h \
+ ../include/encoder_navigation.h ../include/menu_functions.h \
+ ../include/ssd1306_menu.h ../include/at32f403a_407_config.h \
+ ../include/menu_functions.h ../include/eeprom.h
 ../include/at32f403a_407_clock.h:
 ../include/libraries/cmsis/cm4/device_support/at32f403a_407.h:
 ../include/libraries/cmsis/cm4/core_support/core_cm4.h:
@@ -77,3 +82,13 @@ user/main.o: ../user/main.c ../include/at32f403a_407_clock.h \
 ../include/at32_video_ev_spi.h:
 ../include/images.h:
 ../include/at32_video_ev_lcd.h:
+../include/encoder_navigation.h:
+../include/ssd1306_menu.h:
+../include/at32f403a_407_int.h:
+../include/images.h:
+../include/encoder_navigation.h:
+../include/menu_functions.h:
+../include/ssd1306_menu.h:
+../include/at32f403a_407_config.h:
+../include/menu_functions.h:
+../include/eeprom.h:

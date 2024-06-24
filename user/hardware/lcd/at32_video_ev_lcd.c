@@ -1,8 +1,6 @@
 #include "stdlib.h"
 #include <stdio.h>
-#include <stdbool.h>
 #include "string.h"
-#include "math.h"
 #include "at32_video_ev_lcd.h"
 #include "at32_video_ev_spi.h"
 
@@ -12,7 +10,6 @@ uint16_t point_color = 0x0000;
 uint16_t back_color = 0xFFFF;
 
 lcd_dev_struct lcddev;
-
 
 // Создаем буфер для хранения пикселей изображения
 uint16_t lcd_buffer[LCD_WIDTH * LCD_HEIGHT];
@@ -58,43 +55,46 @@ void lcd_wr_reg(uint8_t regval)
   */
 void lcd_wr_data(uint8_t data)
 {
-  // Подготовка данных для передачи через DMA
-  uint8_t data_array[1] = {data};
-
-  // Настройка DMA для передачи данных
-  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.mincm = FALSE;
-  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.chen = FALSE;
-  LCD_SPI_MASTER_Tx_DMA_Channel->dtcnt_bit.cnt = 1; // Передача одного байта данных
-  LCD_SPI_MASTER_Tx_DMA_Channel->maddr  = (uint32_t)data_array;
-  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.chen = TRUE;
-
-  // Ожидание завершения передачи
-  dma_flag_clear(LCD_SPI_MASTER_Tx_DMA_FLAG);
-
-  // Восстановление настроек SPI
-  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.mincm = TRUE;
-  spi_frame_bit_num_set(LCD_SPI_SELECTED, SPI_FRAME_8BIT);
+//  // Подготовка данных для передачи через DMA
+//  uint8_t data_array[1] = {data};
+//
+//  // Настройка DMA для передачи данных
+//  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.mincm = FALSE;
+//  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.chen = FALSE;
+//  LCD_SPI_MASTER_Tx_DMA_Channel->dtcnt_bit.cnt = 1; // Передача одного байта данных
+//  LCD_SPI_MASTER_Tx_DMA_Channel->maddr  = (uint32_t)data_array;
+//  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.chen = TRUE;
+//
+//  // Ожидание завершения передачи
+//  dma_flag_clear(LCD_SPI_MASTER_Tx_DMA_FLAG);
+//
+//  // Восстановление настроек SPI
+//  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.mincm = TRUE;
+//  spi_frame_bit_num_set(LCD_SPI_SELECTED, SPI_FRAME_8BIT);
+	  lcd_spi1_write(data);
 }
 
 
 void lcd_wr_data16(uint16_t data)
 {
-  // Подготовка данных для передачи через DMA
-  uint16_t data_array[2] = {(data & 0xFF00) >> 8, data & 0x00FF};
-
-  // Настройка DMA для передачи данных
-  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.mincm = FALSE;
-  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.chen = FALSE;
-  LCD_SPI_MASTER_Tx_DMA_Channel->dtcnt_bit.cnt = 2; // Передача двух байт данных
-  LCD_SPI_MASTER_Tx_DMA_Channel->maddr  = (uint32_t)data_array;
-  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.chen = TRUE;
-
-  // Ожидание завершения передачи
-  dma_flag_clear(LCD_SPI_MASTER_Tx_DMA_FLAG);
-
-  // Восстановление настроек SPI
-  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.mincm = TRUE;
-  spi_frame_bit_num_set(LCD_SPI_SELECTED, SPI_FRAME_8BIT);
+//  // Подготовка данных для передачи через DMA
+//  uint16_t data_array[2] = {(data & 0xFF00) >> 8, data & 0x00FF};
+//
+//  // Настройка DMA для передачи данных
+//  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.mincm = FALSE;
+//  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.chen = FALSE;
+//  LCD_SPI_MASTER_Tx_DMA_Channel->dtcnt_bit.cnt = 2; // Передача двух байт данных
+//  LCD_SPI_MASTER_Tx_DMA_Channel->maddr  = (uint32_t)data_array;
+//  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.chen = TRUE;
+//
+//  // Ожидание завершения передачи
+//  dma_flag_clear(LCD_SPI_MASTER_Tx_DMA_FLAG);
+//
+//  // Восстановление настроек SPI
+//  LCD_SPI_MASTER_Tx_DMA_Channel->ctrl_bit.mincm = TRUE;
+//  spi_frame_bit_num_set(LCD_SPI_SELECTED, SPI_FRAME_8BIT);
+	  lcd_spi1_write(data >> 8);
+	  lcd_spi1_write(data & 0xFF);
 }
 
 
@@ -115,31 +115,66 @@ void lcd_draw_point(uint16_t x, uint16_t y, uint16_t color) {
   }
 }
 
-void st7735s_DrawBitmap(uint8_t *bitmap, int x, int y, int w, int h) {
+void st7735s_DrawBitmap(Image *img, int x, int y) {
   int i, j;
 
-    // Проверяем выход за границы экрана
-    if (x < 0 || y < 0 || x + w > LCD_WIDTH || y + h > LCD_HEIGHT) {
-      return;
+  if (x < 0 || y < 0 || x + img->w > LCD_WIDTH || y + img->h > LCD_HEIGHT) {
+    return;
+  }
+
+  for (i = 0; i < img->h; i++) {
+    for (j = 0; j < img->w; j++) {
+      uint8_t byte1 = img->data[i * img->w * 2 + j * 2];
+      uint8_t byte2 = img->data[i * img->w * 2 + j * 2 + 1];
+
+      uint8_t r = (byte2 >> 3) & 0x1F;
+      uint8_t g = ((byte2 & 0x07) << 3) | (byte1 >> 5);
+      uint8_t b = byte1 & 0x3F;
+
+      // Собираем данные в 16-битный формат RGB565
+      uint16_t color = (r << 11) | (g << 5) | b;
+
+      // Записываем данные в буфер LCD
+      lcd_draw_point(x + j, y + i, color);
     }
-    // Итерируемся по каждой строке
-    for (i = 0; i < h; i++) {
-      // Итерируемся по каждому пикселю в строке
-      for (j = 0; j < w; j++) {
-        // Извлекаем данные пикселя из двух байтов
-        uint8_t byte1 = bitmap[i * w * 2 + j * 2];
-        uint8_t byte2 = bitmap[i * w * 2 + j * 2 + 1];
+  }
+}
 
-        uint8_t r = (byte2 >> 3) & 0x1F;
-        // Исправленное преобразование зелёного канала
-        uint8_t g = ((byte2 & 0x07) << 3) | (byte1 >> 5);
-        uint8_t b = byte1 & 0x3F;
+// Функция для смешивания цветов с учетом прозрачности (альфа-канала)
+uint16_t blend_colors2(uint16_t fg_color, uint16_t bg_color, uint8_t alpha) {
+    uint8_t r = (((fg_color >> 11) & 0x1F) * alpha + ((bg_color >> 11) & 0x1F) * (255 - alpha)) / 255;
+    uint8_t g = (((fg_color >> 5) & 0x3F) * alpha + ((bg_color >> 5) & 0x3F) * (255 - alpha)) / 255;
+    uint8_t b = (((fg_color >> 0) & 0x1F) * alpha + ((bg_color >> 0) & 0x1F) * (255 - alpha)) / 255;
 
-        // Собираем данные в 16-битный формат RGB565
-        uint16_t color = (r << 11) | (g << 5) | b;
+    return (r << 11) | (g << 5) | b;
+}
 
-        // Записываем данные в буфер LCD
-        lcd_draw_point(x + j, y + i,  color);    }
+void draw_transparent_png(const Image *img, int x, int y) {
+
+    // Смещение для начала блока альфа-канала
+    int alpha_offset = img->w * img->h * 2; // 2 байта на пиксель RGB565
+
+    for (int i = 0; i < img->h; i++) {
+        for (int j = 0; j < img->w; j++) {
+            // Индекс пикселя в блоке RGB565
+            int pixel_index = (i * img->w + j) * 2;
+
+            // Получаем цвет пикселя (RGB565)
+            uint16_t color = *(uint16_t*)(img->data + pixel_index);
+
+            // Индекс альфа-канала для текущего пикселя
+            int alpha_index = alpha_offset + (i * img->w + j);
+
+            // Получаем значение альфа-канала
+            uint8_t alpha = img->data[alpha_index];
+
+            // Смешиваем цвет пикселя с фоном
+            uint16_t bg_color = lcd_buffer[(y + i) * LCD_WIDTH + (x + j)];
+            uint16_t blended_color = blend_colors2(color, bg_color, alpha);
+
+            // Записываем результирующий цвет в буфер
+            lcd_draw_point(x + j, y + i, blended_color);
+        }
     }
 }
 
@@ -387,6 +422,7 @@ void lcd_draw_filled_circle_helper(uint16_t x0, uint16_t y0, uint16_t r, uint8_t
 }
 
 
+
 void lcd_draw_round_rect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t r, uint16_t color)
 {
   // smarter version
@@ -403,6 +439,10 @@ void lcd_draw_round_rect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_
 
 void lcd_draw_filled_round_rect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t r, uint16_t color)
 {
+	if(w<=0)
+	{
+		return;
+	}
   // Заполняем прямоугольник без закругленных углов
   lcd_draw_filled_rectangle(x + r, y, w - r - r, h, color);
 
@@ -462,6 +502,7 @@ void lcd_fill_circle(uint16_t x0, uint16_t y0, uint16_t r, uint16_t color)
   }
 }
 
+
 /**
   * @brief  lcd show string
   * @param  x: start x coordinate value
@@ -497,7 +538,7 @@ void lcd_show_string(uint16_t x, uint16_t y, uint16_t width, uint16_t height, co
             break;
         }
 
-        lcd_show_char(x, y, ch, font->glyph_bitmap, font->glyph_dsc, base_color, gType);
+        lcd_show_char(x, y+font->size/2, ch, font->glyph_bitmap, font->glyph_dsc, base_color, gType);
 
         // Сдвигаемся вправо на ширину символа
         x += (gd->adv_w / 16);
@@ -656,7 +697,7 @@ void lcd_scan_dir(uint8_t dir)
   */
 void st7735s_initial(void)
 {
-  lcd_wr_reg(0x11);  //sleep out 
+  lcd_wr_reg(0x11);  //sleep out
   delay_ms(10);
   lcd_wr_reg(0xCF);
   lcd_wr_data(0x00);
@@ -688,26 +729,17 @@ void st7735s_initial(void)
   lcd_wr_data(0xC5); //sap[2:0];bt[3:0]
   lcd_wr_reg(0xC5);  //vcm control
   lcd_wr_data(0x0E);
-//  lcd_wr_data(0x11);
-//  lcd_wr_reg(0xC7);  //vcm control
-//  lcd_wr_data(0x10);
   lcd_wr_reg(0x3A);  //memory access control
   lcd_wr_data(0x05);
   lcd_wr_reg(0xB1);
   lcd_wr_data(0x01); // RTNA[3:0] - Set 1-line period
-    lcd_wr_data(0x2C); // FPA[5:0] - Front Porch
-    lcd_wr_data(0x2D); // BPA[5:0] - Back Porch
+  lcd_wr_data(0x2C); // FPA[5:0] - Front Porch
+  lcd_wr_data(0x2D); // BPA[5:0] - Back Porch
   lcd_wr_reg(0xB6);  //display function control
   lcd_wr_data(0x0A);
   lcd_wr_data(0xA2);
-
   lcd_wr_reg(0x44);
   lcd_wr_data(0x02);
-
-//  lcd_wr_reg(0xF2);  //3gamma function disable
-//  lcd_wr_data(0x01);
-//  lcd_wr_reg(0x26);  //gamma curve selected
-//  lcd_wr_data(0x01);
   lcd_wr_reg(0xE0);  //set gamma
   lcd_wr_data(0x02);
    lcd_wr_data(0x1c);
@@ -726,7 +758,7 @@ void st7735s_initial(void)
    lcd_wr_data(0x03);
    lcd_wr_data(0x10);
   lcd_wr_reg(0xE1);  //set gamma
-  lcd_wr_data(0x03);
+   lcd_wr_data(0x03);
    lcd_wr_data(0x1d);
    lcd_wr_data(0x07);
    lcd_wr_data(0x06);
@@ -752,18 +784,18 @@ void st7735s_initial(void)
   */
 void lcd_init(void)
 {
-  lcd_hw_init(); 
+  lcd_hw_init();
 
   /* lcd reset */
   LCD_RST_CLR;
   delay_ms(100);
   LCD_RST_SET;
   delay_ms(100);
-  
+
   /* lcd backlight on */
   LCD_BLK_SET;
   delay_ms(100);
- 
+
   LCD_CS1_CLR;
 
   st7735s_initial();
