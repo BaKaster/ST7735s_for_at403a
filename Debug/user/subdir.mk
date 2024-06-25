@@ -5,24 +5,36 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../user/at32f403a_407_clock.c \
+../user/at32f403a_407_config.c \
 ../user/at32f403a_407_int.c \
+../user/eeprom.c \
+../user/encoder_navigation.c \
 ../user/images.c \
-../user/lodepng.c \
-../user/main.c 
+../user/main.c \
+../user/menu_functions.c \
+../user/ssd1306_menu.c 
 
 OBJS += \
 ./user/at32f403a_407_clock.o \
+./user/at32f403a_407_config.o \
 ./user/at32f403a_407_int.o \
+./user/eeprom.o \
+./user/encoder_navigation.o \
 ./user/images.o \
-./user/lodepng.o \
-./user/main.o 
+./user/main.o \
+./user/menu_functions.o \
+./user/ssd1306_menu.o 
 
 C_DEPS += \
 ./user/at32f403a_407_clock.d \
+./user/at32f403a_407_config.d \
 ./user/at32f403a_407_int.d \
+./user/eeprom.d \
+./user/encoder_navigation.d \
 ./user/images.d \
-./user/lodepng.d \
-./user/main.d 
+./user/main.d \
+./user/menu_functions.d \
+./user/ssd1306_menu.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

@@ -38,6 +38,7 @@ extern "C" {
 /* exported macro ------------------------------------------------------------*/
 /* exported functions ------------------------------------------------------- */
 
+extern volatile uint32_t current_time;
 void NMI_Handler(void);
 void HardFault_Handler(void);
 void MemManage_Handler(void);
@@ -46,8 +47,10 @@ void UsageFault_Handler(void);
 void SVC_Handler(void);
 void DebugMon_Handler(void);
 void PendSV_Handler(void);
+void TMR2_GLOBAL_IRQHandler(void);
 void SysTick_Handler(void);
-
+void delay_unblocked(uint32_t);
+uint32_t get_millis(void);
 #ifdef __cplusplus
 }
 #endif

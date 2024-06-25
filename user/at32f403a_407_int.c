@@ -24,6 +24,11 @@
 
 /* includes ------------------------------------------------------------------*/
 #include "at32f403a_407_int.h"
+#include "at32f403a_407_board.h"
+#include <stdbool.h>
+
+volatile uint32_t millis_counter = 0;
+volatile bool flag_timeout = false;
 
 /** @addtogroup AT32F403A_periph_template
   * @{
@@ -33,6 +38,16 @@
   * @{
   */
 
+void init_millis(void)
+{
+  SysTick_Config(SystemCoreClock / 1000);
+  NVIC_SetPriority(SysTick_IRQn, 0);
+}
+
+uint32_t get_millis(void)
+{
+  return millis_counter;
+}
 /**
   * @brief  this function handles nmi exception.
   * @param  none
@@ -128,6 +143,57 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
+	 millis_counter++;
+}
+
+
+
+#define DELAY_TIMER TMR3
+
+// Тактовая частота таймера (установите фактическое значение)
+#define DELAY_TIMER_CLOCK_FREQ 1000000 // 1 МГц
+
+void delay_unblocked(uint32_t ms) {
+  // Вычисляем количество переполнений таймера для нужной задержки
+  uint32_t overflow_count = ms / 65; // 65 мс - период по умолчанию
+
+  // Если нужно меньше 65 мс, дожидаемся нужного количества тактов
+  uint32_t remaining_counts = (DELAY_TIMER_CLOCK_FREQ / 1000) * (ms % 65);
+
+  // Сбрасываем флаг тайм-аута
+  flag_timeout = false;
+
+  // Устанавливаем период (только если нужно больше 65 мс)
+  if (overflow_count > 0) {
+    tmr_period_value_set(DELAY_TIMER, 65535);
+  }
+
+  tmr_interrupt_enable(DELAY_TIMER, TMR_OVF_INT, TRUE);
+  // Запускаем таймер (если он еще не запущен)
+  if (!tmr_flag_get(DELAY_TIMER, TMR_OVF_INT)) {
+    tmr_counter_enable(DELAY_TIMER, TRUE);
+  }
+
+  // Ожидаем нужное количество переполнений
+  while (overflow_count > 0) {
+    while (!flag_timeout); // Ждем переполнения
+    flag_timeout = false; // Сбрасываем флаг
+    overflow_count--;
+  }
+
+  // Если нужно меньше 65 мс, дожидаемся оставшихся тактов
+  if (remaining_counts > 0) {
+    uint32_t start_count = tmr_counter_value_get(DELAY_TIMER);
+    while (tmr_counter_value_get(DELAY_TIMER) - start_count < remaining_counts);
+  }
+}
+
+// Обработчик прерывания по переполнению таймера
+void TMR3_GLOBAL_IRQHandler(void) {
+  if (tmr_flag_get(DELAY_TIMER, TMR_OVF_FLAG) != RESET) {
+    tmr_flag_clear(DELAY_TIMER, TMR_OVF_FLAG);
+    flag_timeout = true;
+  }
 }
 
 /**

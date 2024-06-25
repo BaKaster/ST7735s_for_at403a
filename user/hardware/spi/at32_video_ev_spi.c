@@ -82,17 +82,20 @@ void lcd_hw_init(void)
 
   /* lcd_spi_master_tx_dma_channel configuration */
   dma_reset(LCD_SPI_MASTER_Tx_DMA_Channel);
-  dma_init_struct.buffer_size = 0xFFFE;
+  dma_init_struct.buffer_size = 128*160;
   dma_init_struct.direction = DMA_DIR_MEMORY_TO_PERIPHERAL;
-  dma_init_struct.memory_base_addr = (uint32_t)lcd_data_buf;
+  dma_init_struct.memory_base_addr = (uint32_t)lcd_buffer;
   dma_init_struct.memory_data_width = DMA_MEMORY_DATA_WIDTH_HALFWORD;
   dma_init_struct.memory_inc_enable = TRUE;
   dma_init_struct.peripheral_base_addr = (uint32_t)LCD_SPI_MASTER_DR_Base;
-  dma_init_struct.peripheral_data_width = DMA_PERIPHERAL_DATA_WIDTH_HALFWORD;
+  dma_init_struct.peripheral_data_width = DMA_PERIPHERAL_DATA_WIDTH_BYTE;
   dma_init_struct.peripheral_inc_enable = FALSE;
   dma_init_struct.priority = DMA_PRIORITY_HIGH;
   dma_init_struct.loop_mode_enable = FALSE;
   dma_init(LCD_SPI_MASTER_Tx_DMA_Channel, &dma_init_struct);
+
+  nvic_irq_enable(LCD_SPI_MASTER_Tx_DMA_IRQn, 0, 2);
+ //dma_interrupt_enable(LCD_SPI_MASTER_Tx_DMA_Channel,DMA_FDT_INT,TRUE);
 }
 
 /**

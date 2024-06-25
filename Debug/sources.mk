@@ -25,5 +25,4 @@ firmware \
 user \
 user/hardware/lcd \
 user/hardware/spi \
-user/hardware/touch \
 
