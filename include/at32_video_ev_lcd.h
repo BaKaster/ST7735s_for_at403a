@@ -6,8 +6,8 @@
 #define LCD_WIDTH            	           128
 #define LCD_HEIGHT           	           160
 
-extern const int lcd_width;
-extern const int lcd_height;
+extern const uint16_t lcd_width;
+extern const uint16_t lcd_height;
 
 typedef struct
 {
@@ -82,9 +82,13 @@ extern uint16_t back_color;
 #define GEOSCAN_COLOR 	                  0xC201
 #define BRIGHTED_SELECT                   0X52AA
 #define BACKGROUND                        0x1082
+#define SCROLL_BAR                        0x7BCF
+#define SWITCH_OFF                        0x8C51
+#define SWITCH_CIRCLE                     0xDEDB
+#define EDIT_MODE_BG                      0x434E
+
 extern volatile bool dma_transfer_complete;
 uint8_t calculate_alpha(int16_t x, int16_t y, uint16_t r);
-
 void draw_transparent_png(const Image *img, int x, int y);
 int16_t getFontDataIndex(wchar_t ch, const CharIndex* charIndexArray);
 uint16_t blend_colors(uint16_t fg, uint16_t bg, uint8_t alpha);

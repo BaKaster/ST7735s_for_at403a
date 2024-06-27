@@ -3,10 +3,8 @@
 
 #include "at32f403a_407_board.h"
 #include "at32f403a_407_int.h"
-//#include "ssd1306.h" // Добавьте, если необходимо
 #include <stdbool.h>
 #include "images.h"
-//#include "menu_functions.h"
 #include "encoder_navigation.h"
 #include "menu_functions.h"
 // Определения типов пунктов меню
@@ -81,10 +79,11 @@ extern MenuItem FolderMenu[];
 extern MenuItem SettingsMenu[];
 extern MenuItem* active_menu_item;
 // Объявления функций для работы с меню
+uint8_t calculate_items_to_display(MenuItem *menu, uint8_t total_items);
 void menu_init(void);
 void Back_func(void);
 void Brightness_selected(uint8_t selected_item);
-void display_menu_item(MenuItem *item, uint8_t position, int start_item);
+void display_menu_item(MenuItem *item, uint8_t position, int8_t start_item);
 void display_scroll_bar(uint8_t total_items, uint8_t selected_item, uint8_t visible_items,  bool scroll_on_hover);
 void display_menu(MenuItem *menu, uint8_t selected_item);
 
