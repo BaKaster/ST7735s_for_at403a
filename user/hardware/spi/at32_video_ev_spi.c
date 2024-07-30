@@ -39,11 +39,6 @@ void lcd_hw_init(void)
   LCD_RST_SET;
   LCD_CS1_SET;
   LCD_CS2_SET;
-  
-  gpio_init_struct.gpio_pins = LCD_PEN_PIN;      //LCD_PEN
-  gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
-  gpio_init_struct.gpio_pull = GPIO_PULL_UP;
-  gpio_init(LCD_PEN_PORT, &gpio_init_struct);  
 
   /* configure spi_master pins: sck, mosi and miso */
   /* configure miso pin as alternate function push pull */
@@ -68,7 +63,7 @@ void lcd_hw_init(void)
   spi_default_para_init(&spi_init_struct);
   spi_init_struct.transmission_mode = SPI_TRANSMIT_FULL_DUPLEX;
   spi_init_struct.master_slave_mode = SPI_MODE_MASTER;
-  spi_init_struct.mclk_freq_division = SPI_MCLK_DIV_4;
+  spi_init_struct.mclk_freq_division = SPI_MCLK_DIV_2;
   spi_init_struct.first_bit_transmission = SPI_FIRST_BIT_MSB;
   spi_init_struct.frame_bit_num = SPI_FRAME_8BIT;
   spi_init_struct.clock_polarity = SPI_CLOCK_POLARITY_HIGH;

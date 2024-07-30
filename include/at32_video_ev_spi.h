@@ -42,8 +42,8 @@
 #define LCD_RST_PORT                     GPIOA
 #define LCD_RST_GPIO_CLK			              CRM_GPIOA_PERIPH_CLOCK   
 
-#define LCD_BLK_PIN                      GPIO_PINS_13
-#define LCD_BLK_MASK                     (1<<13)
+#define LCD_BLK_PIN                      GPIO_PINS_9
+#define LCD_BLK_MASK                     (1<<9)
 #define LCD_BLK_PORT                     GPIOA
 #define LCD_BLK_GPIO_CLK			              CRM_GPIOA_PERIPH_CLOCK 
 
@@ -97,11 +97,9 @@
 
 extern uint16_t *lcd_data_buf;
 extern uint16_t lcd_buffer[];
-
 void lcd_hw_init(void);
 uint8_t lcd_spi1_data_receive(void);
 void lcd_spi1_write(uint8_t data);
 void spi_switch(uint8_t mode);
 
 #endif
-

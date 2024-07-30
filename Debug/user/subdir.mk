@@ -10,6 +10,7 @@ C_SRCS += \
 ../user/eeprom.c \
 ../user/encoder_navigation.c \
 ../user/images.c \
+../user/lodepng.c \
 ../user/main.c \
 ../user/menu_functions.c \
 ../user/ssd1306_menu.c 
@@ -21,6 +22,7 @@ OBJS += \
 ./user/eeprom.o \
 ./user/encoder_navigation.o \
 ./user/images.o \
+./user/lodepng.o \
 ./user/main.o \
 ./user/menu_functions.o \
 ./user/ssd1306_menu.o 
@@ -32,6 +34,7 @@ C_DEPS += \
 ./user/eeprom.d \
 ./user/encoder_navigation.d \
 ./user/images.d \
+./user/lodepng.d \
 ./user/main.d \
 ./user/menu_functions.d \
 ./user/ssd1306_menu.d 

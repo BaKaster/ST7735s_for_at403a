@@ -324,7 +324,7 @@ void Information() {
         {.info_name = L"Инверсия:", .data_type = DATA_TYPE_BOOL, .data.bool_val = inversion_state.state},
         // Добавьте больше элементов, чтобы проверить прокрутку
        {.info_name = L"Введено:", .data_type = DATA_TYPE_UINT16, .data.uint16_val = entered_number},
-		{.info_name = L"Геоскан топ?", .data_type = DATA_TYPE_WCHART, .data.wchart_val = L"Разумеется"},
+		{.info_name = L"Военмех?", .data_type = DATA_TYPE_WCHART, .data.wchart_val = L"Лучше всех!"},
     };
     int num_info_items = sizeof(info_items) / sizeof(info_items[0]);
     lcd_clear(BACKGROUND);

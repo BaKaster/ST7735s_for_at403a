@@ -6,8 +6,10 @@ MenuItem MainMenu[6];
 MenuItem DisplayMenu[4];
 MenuItem SettingsMenu[3];
 uint8_t selected_item;
+
 const uint16_t lcd_width = LCD_WIDTH;
 const uint16_t lcd_height = LCD_HEIGHT;
+
 SliderData brightness_data = {0, 100, 50};
 SwitchData inversion_state = {false, L"Выкл."};
 
@@ -40,7 +42,6 @@ void display_status_bar() { //оптимизировано
 
     st7735s_DrawBitmap(&Geoscan_logo, 3, 4);
   } else {
-    // current_menu->parent может быть nullptr, проверяем ДО обращения к нему
     text = current_menu->parent ?
            current_menu->parent[current_menu->parent_num].name :
            current_menu->name;
