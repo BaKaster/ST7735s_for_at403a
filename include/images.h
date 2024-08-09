@@ -14,6 +14,7 @@ extern const uint8_t Display_map[];
 extern const uint8_t Network_map[];
 extern const uint8_t Clear_map[];
 extern const uint8_t Input_map[];
+extern const uint16_t R2d2_map[];
 
 extern Image Geoscan_logo;
 extern Image Info;
@@ -26,5 +27,6 @@ extern Image Display;
 extern Image Network;
 extern Image Clear;
 extern Image Input;
+extern Image R2d2;
 
 #endif // IMAGES_H

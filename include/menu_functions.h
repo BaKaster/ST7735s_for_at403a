@@ -27,4 +27,5 @@ void input_number_handler(uint8_t);
 void Brightness_selected(uint8_t);
 void color_inversion(uint8_t);
 void Information(void);
+void print_image(void);
 #endif /* MENU_FUNCTIONS_H */

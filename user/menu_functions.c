@@ -29,6 +29,29 @@ void apply_changes()
 	 entered_number = eeprom;
 
 }
+void print_image()
+{
+	functionStartTime = get_millis(); // Запоминаем время запуска функции
+	functionRunning=true;
+    uint16_t start_encoder = tmr_counter_value_get(TMR2);
+	  active_menu_item = &current_menu[selected_item];
+		lcd_clear(BACKGROUND);
+		while(functionRunning)
+			{
+
+
+			st7735s_DrawBitmap(&R2d2, 0, 0);
+			lcd_display_buffer();
+
+
+			if(functionRunning==false)
+					{
+				tmr_counter_value_set(TMR2, start_encoder);
+				            break;
+				        }
+				    }
+		active_menu_item = NULL;
+}
 
 wchar_t* display_up_time(wchar_t* up_time_str) {
     // Получаем текущее время в миллисекундах
