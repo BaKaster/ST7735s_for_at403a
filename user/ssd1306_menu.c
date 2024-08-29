@@ -213,7 +213,7 @@ void menu_init() {
 	MainMenu[2] = (MenuItem){MENU_TYPE_FOLDER, L"Настройки", NULL, SettingsMenu, NULL, 6, &Settings, 0, NULL};
 	MainMenu[3] = (MenuItem){MENU_TYPE_ACTION, L"Геоскан", Geoscan_logotype, NULL, NULL, 6, &Geoscan, 0, NULL};
 	MainMenu[4] = (MenuItem){MENU_TYPE_ACTION, L"Ввод", input_number_handler, NULL, NULL, 6, &Input, 0, NULL};
-	MainMenu[5] = (MenuItem){MENU_TYPE_ACTION, L"Картинка", print_image, NULL, NULL, 6, &Function, 0, NULL};
+	MainMenu[5] = (MenuItem){MENU_TYPE_ACTION, L"Функция", NULL, NULL, NULL, 6, &Function, 0, NULL};
 
 
 
