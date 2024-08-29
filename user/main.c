@@ -51,18 +51,14 @@ void lcd_display_initial_info(void)
 //	  wchar_t time_str[10];
 //	  swprintf(time_str, sizeof(time_str) / sizeof(wchar_t), L"%lu", current_time);
 	lcd_clear(BACKGROUND);
-	lcd_draw_filled_round_rect(2, 23, 126, 135, 7, BUTTONS);
-	lcd_draw_filled_round_rect(5, 33, 120, 18, 7, BRIGHTED_SELECT);
-    lcd_show_string(7,60,120,100,&Montserrat_12, L"1 2 3 4 5 6 7 8 9 0", WHITE);
-    lcd_show_string(7,80,120,100,&Montserrat_12, L"й ц у к е н г ш щ з х", WHITE);
-    lcd_show_string(7,100,120,100,&Montserrat_12, L"ф ы в а п р о л д ж э", WHITE);
-    lcd_show_string(7,120,20,100,&Montserrat_12, L"я ч с м и т ь б ю ё", WHITE);
-    lcd_show_string(7,140,120,100,&Montserrat_12, L"?123 , яз пробел . ст", WHITE);
-
+	lcd_draw_filled_rectangle(126, 10, 128, 160, BRIGHTED_SELECT);
+	lcd_draw_filled_round_rect(0, 0, 128, 21, 5, STATUS_BAR);
+	lcd_draw_filled_round_rect(2, 25, 121, 42, 7, BRIGHTED_SELECT);
+    lcd_show_string(27,30,120,100,&Montserrat_16, L"Яркость:", WHITE);
     st7735s_DrawBitmap(&Geoscan_logo, 3, 5);
-//    draw_transparent_png(&Display, 4, 26);
-//    lcd_draw_round_rect(2, 25, 121, 42, 7, WHITE);
-//	lcd_draw_filled_round_rect(6, 50, 112, 12, 5, GEOSCAN_COLOR);
+    draw_transparent_png(&Display, 4, 26);
+    lcd_draw_round_rect(2, 25, 121, 42, 7, WHITE);
+	lcd_draw_filled_round_rect(6, 50, 112, 12, 5, GEOSCAN_COLOR);
 	lcd_display_buffer();
 }
 
@@ -128,8 +124,8 @@ int main(void)
 	   current_time = get_millis();
 	  //delay_unblocked(100000);
 	// lcd_display_initial_info();
-	  encoder_handler(true);
-	 //  lcd_display_initial_info();
+	   encoder_handler(true);
+
 	   handleButton();
 
 

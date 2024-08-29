@@ -160,99 +160,69 @@ void Geoscan_logotype(uint8_t selected_digit)
 }
 
 #define MAX_INPUT_DIGITS 10
-bool capsLock = false;
+
 wchar_t input_number[MAX_INPUT_DIGITS + 1] = {0};
 uint8_t input_length = 0;
 int32_t encoder_position = 0; // Текущая позиция энкодера
 
-// Изменено: добавлена ширина кнопки (третий элемент массива)
-const uint8_t button_positions[][3] = {
-  // Первая строка (1 2 3 4 5 6 7 8 9 0)
-  { 4, 63, 12 }, { 17, 63, 12 }, { 30, 63, 11 }, { 42, 63, 12 }, { 55, 63, 12 },
-  { 68, 63, 12 }, { 81, 63, 12 }, { 94, 63, 12 }, { 107, 63, 12 }, { 118, 63, 12 },
+#define TOTAL_OPTIONS 12 // Общее количество опций, включая цифры и кнопки "Clear" и "Apply"
 
-  // Вторая строка (й ц у к е н г ш щ з х)
-  { 2, 83, 11 }, { 13, 83, 11 }, { 25, 83, 11 }, { 36, 83, 11 }, { 47, 83, 11 },
-  { 58, 83, 11 }, { 70, 83, 11 }, { 82, 83, 13 }, { 96, 83, 13 }, { 110, 83, 10 }, { 121, 83, 9 },
-
-  // Третья строка (ф ы в а п р о л д ж э)
-  { 2, 103, 11 }, { 13, 103, 11 }, { 25, 103, 11 }, { 37, 103, 11 }, { 49, 103, 11 },
-  { 61, 103, 11 }, { 73, 103, 11 }, { 85, 103, 10 }, { 97, 103, 11 }, { 109, 103, 11 },{ 121, 103, 9 },
-
-  // Четвертая строка (я ч с м и т ь б ю ё)
-  { 2, 123, 11 }, { 13, 123, 11 }, { 25, 123, 11 }, { 37, 123, 11 },  { 49, 123, 11 },
-  { 61, 123, 11 }, { 73, 123, 11 }, { 85, 123, 11 }, { 97, 123, 11 }, { 110, 123, 26 },
-//
-  // Пятая строка (?123 , яз пробел . ст)
-   { 3, 143, 11 }, { 16, 143, 11 }, { 28, 143, 11 },  { 40, 143, 11},
-  { 52, 143, 43},  // Запятая - коррекция на меньшую ширину
-  { 96, 143, 12 }, { 109, 143, 27 }, // Точка - коррекция на меньшую ширину
+// Массив координат X для каждой кнопки
+const uint8_t button_positions[TOTAL_OPTIONS][2] = {
+    {21, 69},  // Кнопка "1"
+    {58, 69},  // Кнопка "2"
+    {95, 69},  // Кнопка "3"
+    {21, 91},  // Кнопка "4"
+    {58, 91},  // Кнопка "5"
+    {95, 91},  // Кнопка "6"
+    {21, 114},  // Кнопка "7"
+    {58, 114}, // Кнопка "8"
+    {95, 114}, // Кнопка "9"
+    {21, 137},   // Кнопка "Clear"
+    {58, 137},   // Кнопка "0"
+    {95, 137},  // Кнопка "Apply"
 };
 
-// Общее количество кнопок
-#define TOTAL_OPTIONS (sizeof(button_positions) / sizeof(button_positions[0]))
-
-wchar_t* buttons_lower[TOTAL_OPTIONS] = {L"1", L"2", L"3", L"4", L"5", L"6", L"7", L"8", L"9", L"0",
-                                 L"й", L"ц", L"у", L"к", L"е", L"н", L"г", L"ш", L"щ", L"з", L"х",
-                                 L"ф", L"ы", L"в", L"а", L"п", L"р", L"о", L"л", L"д", L"ж", L"э",
-                                 L"я", L"ч", L"с", L"м", L"и", L"т", L"ь", L"б", L"ю", L"clear",
-                                 L"ё", L",", L".", L"!", L" ", L"swap", L"OK"}; // Замените на ваши иконки
-
-
-wchar_t* buttons_upper[TOTAL_OPTIONS] = {L"1", L"2", L"3", L"4", L"5", L"6", L"7", L"8", L"9", L"0",
-                                 L"Й", L"Ц", L"У", L"К", L"Е", L"Н", L"Г", L"Ш", L"Щ", L"З", L"Х",
-                                 L"Ф", L"Ы", L"В", L"А", L"П", L"Р", L"О", L"Л", L"Д", L"Ж", L"Э",
-                                 L"Я", L"Ч", L"С", L"М", L"И", L"Т", L"Ь", L"Б", L"Ю", L"clear",
-                                 L"Ё", L",", L".", L"!", L" ", L"swap", L"OK"};
 
 void display_input_interface(uint8_t selected_digit) {
-    uint8_t rectangle_height = 18;
-    uint8_t y_offset = 0;
-    if (lcd_height == 128) {
-        rectangle_height = 15;
-        y_offset = 4;
-    }
-
+	   uint8_t rectangle_width = 35;
+	    uint8_t rectangle_height = 18;
+	    uint8_t y_offset=0;
+if(lcd_height==128)
+{    uint8_t rectangle_height = 15;
+uint8_t y_offset=4;}
     // Очистка экрана
-    lcd_clear(BACKGROUND);
-    display_status_bar();
-    lcd_draw_filled_round_rect(0, 23, 128, 135, 7, BUTTONS);
-    lcd_draw_filled_round_rect(1, 59, 127, 102, 5, BRIGHTED_SELECT);
-    lcd_draw_filled_round_rect(4, 26, 120, 28, 7, BRIGHTED_SELECT);
-
-    // Отображение символов и кнопок
+		lcd_clear(BACKGROUND);
+	   	display_status_bar();
+		lcd_draw_filled_round_rect(2, 23, 121, 135, 7, BUTTONS);
+		lcd_draw_filled_round_rect(6, 62, 113, 93, 7, BRIGHTED_SELECT);
+		lcd_draw_filled_round_rect(6, 26, 113, 28, 7, BRIGHTED_SELECT);
+    // Отображение цифр и кнопок "Clear" и "Apply"
+    wchar_t* buttons[TOTAL_OPTIONS] = {L"1", L"2", L"3", L"4", L"5", L"6", L"7", L"8", L"9", L"Очистить", L"0", L"OK"};
     for (uint8_t i = 0; i < TOTAL_OPTIONS; i++) {
-        // Изменено: получение ширины кнопки из массива
-        uint8_t rectangle_width = button_positions[i][2];
 
-        if (i < TOTAL_OPTIONS) {
-            lcd_draw_filled_round_rect(button_positions[i][0]-2, button_positions[i][1] - 2 - y_offset, rectangle_width, rectangle_height, 4, 0x2124);
-        }
-
-        // Отображение иконок или текста
-        if (i == 41) { // symbols
-            draw_transparent_png(&Clear, button_positions[i][0], button_positions[i][1] - y_offset); // Замените symbols_icon на вашу иконку
-        } else if (i == 47) { // swap
-        	  lcd_draw_filled_round_rect(button_positions[i][0]-2, button_positions[i][1] - 2 - y_offset, rectangle_width, rectangle_height, 4, capsLock ? BRIGHTED_SELECT : 0x2124);
-            draw_transparent_png(&Arrow_up, button_positions[i][0] - 2, button_positions[i][1]  - y_offset); // Замените swap_icon на вашу иконку
-
-        } else {
-            lcd_show_string(button_positions[i][0], button_positions[i][1] - y_offset, 120, 100, &Montserrat_12, buttons_lower[i], WHITE);
-        }
+    		lcd_draw_filled_round_rect( button_positions[i][0]-13, button_positions[i][1]-4-y_offset, rectangle_width, rectangle_height,5, 0x2124);
+    		if(i==9)
+    		    	    	{
+    			  draw_transparent_png(&Clear, button_positions[i][0]-8, button_positions[i][1]-4-y_offset);
+    		    	    	}
+    		else if(i==11)
+    	    	{
+        lcd_show_string(button_positions[i][0]-8, button_positions[i][1]-1-y_offset, 120, 100, &Montserrat_16, buttons[i], WHITE);
+    	    	}
+    	else { lcd_show_string(button_positions[i][0], button_positions[i][1]-y_offset, 120, 100, &Montserrat_16, buttons[i], WHITE);}
     }
 
-    // Подсветка выбранного символа или кнопки
-    // Изменено: получение ширины кнопки из массива
-    uint8_t selected_width = button_positions[selected_digit][2];
-    lcd_draw_round_rect(button_positions[selected_digit][0]-2, button_positions[selected_digit][1] - 2 - y_offset, selected_width, rectangle_height, 5, WHITE);
+    // Подсветка выбранного числа или кнопки
+    lcd_draw_round_rect(button_positions[selected_digit][0]-13, button_positions[selected_digit][1]-4-y_offset, rectangle_width, rectangle_height,5, WHITE);
     lcd_show_string(10, 36, 120, 100, &Montserrat_16, input_number, WHITE);
-    lcd_display_buffer();
+	lcd_display_buffer();
 }
 
 
 void input_number_handler(uint8_t selected_item) {
 	functionStartTime = get_millis(); // Запоминаем время запуска функции
-	    uint8_t selected_digit = encoder_position % TOTAL_OPTIONS; // 10 цифр + 2 кнопки
+	    uint8_t selected_digit = encoder_position % 12; // 10 цифр + 2 кнопки
 	    bool input_complete = false;
 	    functionRunning=true;
 	    active_menu_item = &current_menu[selected_item];
@@ -274,40 +244,41 @@ void input_number_handler(uint8_t selected_item) {
 	               encoder_position += (int)(accumulated_delta / SCROLL_THRESHOLD);
 	               accumulated_delta -= (int)(accumulated_delta / SCROLL_THRESHOLD) * SCROLL_THRESHOLD; // Уменьшаем накопленное значение на количество "шагов"
 
-	               selected_digit = abs(encoder_position) % TOTAL_OPTIONS; // Обновление выбранного числа
+	               selected_digit = abs(encoder_position) % 12; // Обновление выбранного числа
 	               display_input_interface(selected_digit); // Обновление интерфейса без нажатия кнопки
 	           }
 
     // Обработка нажатия кнопки
 	           if (!functionRunning) {
-	        	   if (selected_digit == 41) { // Кнопка "Clear"
-	               // Очистка введенного текста
-	        	   if (input_length > 0) {
-	        	                  input_length--;
-	        	                  input_number[input_length] = '\0';
-	        	                  display_input_interface(selected_digit);
-	        	              }
-	           }else if (selected_digit == 47) { // Кнопка "Swap" (Caps Lock)
-	               // Инвертируем флаг capsLock
-	               capsLock = !capsLock;
-	               display_input_interface(selected_digit);
-	           } // Обновляем интерфейс
-	               else if (selected_digit == 48) { // Кнопка "Apply"
-	               // Завершение ввода
-	               input_complete = true;
-	           } else if (selected_digit < TOTAL_OPTIONS) { // Проверка на допустимый индекс
-	               // Добавление символа к введенному тексту
-	               if (input_length < MAX_INPUT_DIGITS) {
-	                   input_number[input_length++] = capsLock ? buttons_upper[selected_digit][0] : buttons_lower[selected_digit][0]; // Берем первый символ из строки
-	                   input_number[input_length] = '\0'; // Обновление строки
-	                   display_input_interface(selected_digit); // Обновление интерфейса после ввода символа
-	               }
-	           }}
+	                    if (selected_digit < 9) {
+	                        // Добавление цифры к введенному числу
+	                        if (input_length < MAX_INPUT_DIGITS) {
+	                            input_number[input_length++] = '0' + selected_digit+1;
+	                            input_number[input_length] = '\0'; // Обновление строки
+	                            display_input_interface(selected_digit); // Обновление интерфейса после ввода числа
+	                        }
+	                    } else if (selected_digit == 9) {
+	                        // Очистка последней цифры
+	                    	 if (input_length > 0) {
+	                    	                    input_number[--input_length] = '\0'; // Удаление последнего символа
+	                    	                    display_input_interface(selected_digit); // Обновление интерфейса п
+	                        }
+	                    } else if (selected_digit == 10) {
+	                        // Добавление цифры к введенному числу
+	                        if (input_length < MAX_INPUT_DIGITS) {
+	                            input_number[input_length++] = '0' + 0;
+	                            input_number[input_length] = '\0'; // Обновление строки
+	                            display_input_interface(selected_digit); // Обновление интерфейса после ввода числа
+	                        }}
+	                        else if (selected_digit == 11) {
+	                        // Завершение ввода
+	                        input_complete = true;
+	                    }
 
 	                    // Сброс флага нажатия кнопки
 	                    functionRunning = true;
 	                }
-
+	            }
 
   // Преобразование и сохранение числа
   entered_number = wcstol(input_number, NULL, 10);
